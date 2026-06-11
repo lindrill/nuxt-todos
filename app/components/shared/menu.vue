@@ -2,7 +2,7 @@
     <q-card class="my-card menu" flat rounded-borders>
         <q-card-section>
             <q-list>
-                <q-item clickable>
+                <q-item clickable v-ripple to="/">
                     <q-item-section avatar>
                         <q-icon color="blue-grey-4" size="22px" name="fa-solid fa-chart-column" />
                     </q-item-section>
@@ -10,7 +10,7 @@
                     <q-item-section>Dashboard</q-item-section>
                 </q-item>
 
-                <q-item clickable v-ripple>
+                <q-item clickable v-ripple to="/todos">
                     <q-item-section avatar>
                     <q-icon color="blue-grey-4" size="22px" name="fa-regular fa-clipboard" />
                     </q-item-section>
@@ -18,7 +18,16 @@
                     <q-item-section>Todos</q-item-section>
                 </q-item>
 
-                <q-item clickable v-ripple>
+                <q-item clickable v-ripple to="/users">
+                    <q-item-section avatar>
+                    <q-icon color="blue-grey-4" size="22px" name="fa-solid fa-people-group" />
+                    </q-item-section>
+                    
+
+                    <q-item-section>Users</q-item-section>
+                </q-item>
+
+                <q-item clickable v-ripple to="/settings">
                     <q-item-section avatar>
                     <q-icon color="blue-grey-4" size="22px" name="fa-solid fa-gear" />
                     </q-item-section>
@@ -34,7 +43,7 @@
                             <img src="https://cdn.quasar.dev/img/boy-avatar.png" />
                         </q-avatar>
                     </q-item-section>
-                    <q-item-section>{{ userInfo?.first_name }} {{ userInfo?.last_name }}</q-item-section>
+                    <q-item-section>{{ displayName }}</q-item-section>
                     <q-item-section side @click="logout" class="cursor-pointer q-hoverable text-primary" v-if="!submitting">
                         Logout
                     </q-item-section>
@@ -67,6 +76,11 @@
             submitting.value = false
         }
     }
+
+    // ===== COMPUTED PROPERTIES =====
+    const displayName = computed(() => {
+        return userInfo.value ? `${userInfo.value.first_name} ${userInfo.value.last_name}` : 'Loading...'
+    })
 </script>
 
 <style scoped>

@@ -159,7 +159,7 @@
                 <TasksNewTask @cancelNewTaskDialog="cancelNewTaskDialog" @saveNewTodo="saveNewTodo"/>
             </q-dialog>
             <q-dialog v-model="openDeleteDialog" backdrop-filter="blur(4px)" persistent>
-                <ReusablesDeleteDialog :todo="todo" @cancelDeleteDialog="cancelDeleteDialog" @deleteTodo="deleteTodo"/>
+                <ReusablesDeleteDialog :item="todo" :table="'todos'" @cancelDeleteDialog="cancelDeleteDialog" @deleteItem="deleteTodo"/>
             </q-dialog>
             <q-dialog v-model="openEditTaskDialog" backdrop-filter="blur(4px)" persistent>
                 <TasksEditTask :todo="todo" @cancelEditTaskDialog="cancelEditTaskDialog" @updateTodo="updateTodo"/>
@@ -218,12 +218,12 @@
     }
     const deleteTodo = () => {
         openDeleteDialog.value = false
-        notification('positive', 'Todo successfully deleted!')
+        notification('positive', 'Task successfully deleted!')
         fetchTodos()
     }
     const updateTodo = () => {
         openEditTaskDialog.value = false
-        notification('positive', 'Todo successfully updated!')
+        notification('positive', 'Task successfully updated!')
         fetchTodos()
     }
     
@@ -247,7 +247,7 @@
         } catch (err) {
             console.error('update todo failed:', err)
         }
-        notification('positive', 'Todo successfully updated!')
+        notification('positive', 'Task successfully updated!')
         fetchTodos()
     }
     

@@ -4,29 +4,22 @@
             <q-card-section class="row items-center">
             <q-avatar icon="fa-regular fa-trash-can" color="amber-7" text-color="red" />
             <!-- <i class=""></i> -->
-            <span class="q-ml-sm">Delete this task?</span>
+            <span class="q-ml-sm">Delete this {{ getTableName }}?</span>
             </q-card-section>
 
             <q-card-actions align="right" class="q-pa-lg">
                 <q-btn flat label="Cancel" text-color="black" @click="cancelDeleteDialog"/>
-                <q-btn label="Delete" color="amber-7" text-color="black" @click="deleteTodo"/>
+                <q-btn label="Delete" color="amber-7" text-color="black" @click="deleteItem"/>
             </q-card-actions>
       </q-card>
     </div>
 </template>
 <script setup>
     const { fetch, apiBase } = useApi()
-    const props = defineProps(['todo'])
-    const emit = defineEmits(['cancelDeleteDialog', 'deleteTodo'])
+    const props = defineProps(['item', 'table'])
+    const emit = defineEmits(['cancelDeleteDialog', 'deleteItem'])
 
     // ===== REACTIVE VARIABLES =====
-    const newTodo = ref({
-        title: "",
-        description: "",
-        // dateCreated: "",
-        // dueDate: "",
-        status: "pending", // pending, in-progress, completed
-    })
     
     // ===== METHODS =====
     const cancelDeleteDialog = () => {
@@ -34,14 +27,26 @@
     }
     
     // API calls
-    const deleteTodo = async () => {
+    const deleteItem = async () => {
+        const url = '/' + props.table + '/'
+        console.log('deleteItem', `${url}${props.item._id}`, props.item)
         try {
-            await fetch('/todos/'+props.todo._id, {
+            await fetch(`${url}${props.item._id}`, {
                 method: 'DELETE'
             })
-            emit('deleteTodo')
+            emit('deleteItem')
         } catch (err) {
-            console.error('Add todo failed:', err)
+            console.error('Item deletion failed:', err)
         }
     }
+
+    // ===== COMPUTED PROPERTIES =====
+    const getTableName = computed(() => {
+        if(props.table === 'todos') {
+            return 'task'
+        }
+
+        let str = props.table.slice(0, -1); // removes 's' from the string (todos -> todo)
+        return str
+    })
 </script>
