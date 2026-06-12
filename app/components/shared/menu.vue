@@ -44,25 +44,49 @@
                         </q-avatar>
                     </q-item-section>
                     <q-item-section>{{ displayName }}</q-item-section>
-                    <q-item-section side @click="logout" class="cursor-pointer q-hoverable text-primary" v-if="!submitting">
-                        Logout
-                    </q-item-section>
-                    <q-item-section side v-else>
-                        <q-spinner-tail color="primary" size="20px" />
-                        <q-tooltip :offset="[0, 8]">QSpinnerTail</q-tooltip>
-                    </q-item-section>
+                    <q-btn-dropdown size="12px" flat dense round dropdown-icon="arrow_drop_down">
+                        <q-list>
+                            <q-item clickable v-close-popup @click="changePassword">
+                                <q-item-section avatar>
+                                     <i class="fa-solid fa-lock"></i>
+                                </q-item-section>
+                                <q-item-section class="mx-none">
+                                    <q-item-label>Change password</q-item-label>
+                                </q-item-section>
+                            </q-item>
+
+                            <q-item clickable v-close-popup @click="logout">
+                                <q-item-section avatar>
+                                    <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                                </q-item-section>
+                                <q-item-section>
+                                    <q-item-label>Logout</q-item-label>
+                                </q-item-section>
+                                <q-item-section side v-if="submitting">
+                                    <q-spinner-tail color="primary" size="20px" />
+                                    <q-tooltip :offset="[0, 8]">QSpinnerTail</q-tooltip>
+                                </q-item-section>
+                            </q-item>
+                        </q-list>
+                    </q-btn-dropdown>
                 </q-item>
 
                 <q-separator />
             </q-list>
         </q-card-section>
     </q-card>
+    <q-dialog v-model="openChangePasswordDialog" backdrop-filter="blur(4px)" persistent>
+        <UsersChangePassword :page="'profile'" :user="userInfo" @cancelChangePasswordDialog="cancelChangePasswordDialog" @updatePassword="updatePassword"/>
+    </q-dialog>
 </template>
 
 <script setup>
     // ===== REACTIVE VARIABLES =====
     const { userInfo, logoutUser } = useAuth()
+    const { notification } = useTrigger()
+    
     const submitting = ref(false)
+    const openChangePasswordDialog = ref(false)
 
      // ===== METHODS =====
     const logout = async () => {
@@ -75,6 +99,16 @@
             navigateTo('/login')
             submitting.value = false
         }
+    }
+    const changePassword = () => {
+        openChangePasswordDialog.value = true
+    }
+    const cancelChangePasswordDialog = () => {
+        openChangePasswordDialog.value = false
+    }
+    const updatePassword = () => {
+        openChangePasswordDialog.value = false
+        notification('positive', 'Password changed successfully!')
     }
 
     // ===== COMPUTED PROPERTIES =====

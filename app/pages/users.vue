@@ -30,8 +30,15 @@
                                     no-results-label="The filter didn't uncover any results">
                                     <template v-slot:body-cell-actions="props">
                                         <q-td :props="props">
-                                            <q-btn @click="editUser(props.row)" flat round dense icon="edit" color="primary" size="md" />
-                                            <q-btn @click="removeUser(props.row)" flat round dense icon="delete" color="negative" size="md" />
+                                            <q-btn @click="editUser(props.row)" flat round dense icon="edit" color="primary" size="md">
+                                                <q-tooltip anchor="top middle" self="bottom middle" :offset="[10, 10]">Edit User</q-tooltip>
+                                            </q-btn>
+                                            <q-btn @click="changePassword(props.row)" flat round dense icon="lock" color="teal" size="md">
+                                                <q-tooltip anchor="top middle" self="bottom middle" :offset="[10, 10]">Change Password</q-tooltip>
+                                            </q-btn>
+                                            <q-btn @click="removeUser(props.row)" flat round dense icon="delete" color="negative" size="md">
+                                                <q-tooltip anchor="top middle" self="bottom middle" :offset="[10, 10]">Delete User</q-tooltip>
+                                            </q-btn>
                                         </q-td>
                                     </template>
                                 </q-table>
@@ -50,6 +57,9 @@
             </q-dialog>
             <q-dialog v-model="openDeleteDialog" backdrop-filter="blur(4px)" persistent>
                 <ReusablesDeleteDialog :item="user" :table="'users'" @cancelDeleteDialog="cancelDeleteDialog" @deleteItem="deleteUser"/>
+            </q-dialog>
+            <q-dialog v-model="openChangePasswordDialog" backdrop-filter="blur(4px)" persistent>
+                <UsersChangePassword :user="user" @cancelChangePasswordDialog="cancelChangePasswordDialog" @updatePassword="updatePassword"/>
             </q-dialog>
         </div>
     </div>
@@ -83,6 +93,7 @@
     const openNewUserDialog = ref(false)
     const openEditUserDialog = ref(false)
     const openDeleteDialog = ref(false)
+    const openChangePasswordDialog = ref(false)
     const user = ref([])
     
     // ===== METHODS =====
@@ -94,6 +105,9 @@
     }
     const cancelDeleteDialog = (cancelDeleteDialog) => {
         openDeleteDialog.value = cancelDeleteDialog
+    }
+    const cancelChangePasswordDialog = (cancelChangePasswordDialog) => {
+        openChangePasswordDialog.value = cancelChangePasswordDialog
     }
     const saveNewUser = () => {
         openNewUserDialog.value = false
@@ -118,6 +132,15 @@
     const deleteUser = () => {
         openDeleteDialog.value = false
         notification('positive', 'User successfully deleted!')
+        fetchUsers()
+    }
+    const changePassword = (selectedUser) => {
+        user.value = selectedUser
+        openChangePasswordDialog.value = true
+    }
+    const updatePassword = () => {
+        openChangePasswordDialog.value = false
+        notification('positive', 'User password successfully changed!')
         fetchUsers()
     }
     
