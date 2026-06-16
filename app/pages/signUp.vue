@@ -39,7 +39,7 @@
                                     </template>
                                 </q-input>
                             </div>
-                            <q-btn type="submit" @click="signUp" color="amber-7" text-color="grey-10" :loading="submitting" :disable="submitting" unelevated class="q-mt-sm login-btn q-py-sm">
+                            <q-btn type="submit" color="amber-7" text-color="grey-10" :loading="submitting" :disable="submitting" unelevated class="q-mt-sm login-btn q-py-sm">
                                 <div>Sign Up</div>
                             </q-btn>
                         </q-form>

@@ -74,7 +74,7 @@
         }
     }
     const forgotPassword = () => {
-        
+        navigateTo('/forgotPassword')
     }
 </script>
 
