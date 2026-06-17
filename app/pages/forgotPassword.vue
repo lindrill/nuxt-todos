@@ -10,7 +10,7 @@
 
                         <q-separator inset />
 
-                        <q-card-section>
+                        <q-card-section v-if="!emailSent">
                             <div class="q-my-md">
                                 <p>Please enter your email to receive a password reset link.</p>
                                 <q-input type="email" color="amber-7" filled dense v-model="email" placeholder="Email">
@@ -22,6 +22,16 @@
                             <q-btn type="submit" :loading="submitting" :disable="submitting" color="amber-7" text-color="grey-10" unelevated class="q-mt-sm login-btn q-py-sm">
                                 <div>Send</div>
                             </q-btn>
+                        </q-card-section>
+                        <q-card-section v-else>
+                            <div class="text-center q-my-md">
+                                <q-icon name="fa-solid fa-envelope-circle-check" size="64px" color="positive" />
+                                <p class="text-h6 q-mt-md">Check your email!</p>
+                                <p>We've sent a password reset link to <strong>{{ email }}</strong></p>
+                                <p class="text-caption">Didn't receive it? Check your spam folder.</p>
+                                <q-btn flat color="amber-7" @click="emailSent = false">Send again</q-btn>
+                                <q-btn flat color="grey-7" to="/login">Back to login</q-btn>
+                            </div>
                         </q-card-section>
                     </q-card>
                 </q-form>
@@ -44,6 +54,7 @@
 
     const email = ref('')
     const submitting = ref(false)
+    const emailSent = ref(false)
 
     // ===== METHODS =====
 
@@ -55,6 +66,7 @@
                 method: 'POST',
                 body: JSON.stringify({ email: email.value })
             })
+            emailSent.value = true
             notification('positive', 'Password reset link sent! Please check your email.')
         } catch (err) {
             console.error('Forgot password failed:', err)
