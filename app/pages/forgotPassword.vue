@@ -70,7 +70,7 @@
             notification('positive', 'Password reset link sent! Please check your email.')
         } catch (err) {
             console.error('Forgot password failed:', err)
-            notification('negative', 'Failed to send password reset link.')
+            notification('negative', 'Failed to send password reset link. Check your email address.')
         } finally {
             submitting.value = false
         }

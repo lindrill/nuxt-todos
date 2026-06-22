@@ -2,7 +2,31 @@
     <div>
         <div class="row flex-center window-height">
             <div class="col-3 q-pa-md q-gutter-md q-ma-sm">
-                <q-form @submit="resetPassword">
+                <!-- Loading state -->
+                <q-card v-if="validating" bordered class="my-card flat card-rounded q-pa-md">
+                    <q-card-section class="text-center">
+                        <q-spinner color="amber-7" size="3em" />
+                        <p class="q-mt-md">Validating reset link...</p>
+                    </q-card-section>
+                </q-card>
+ 
+                <!-- Invalid/Expired token -->
+                <q-card v-else-if="!isValidToken" bordered class="my-card flat card-rounded q-pa-md">
+                    <q-card-section class="text-center">
+                        <q-icon name="fa-solid fa-circle-exclamation" size="64px" color="negative" />
+                        <p class="text-h6 q-mt-md">Invalid or Expired Link</p>
+                        <p>This password reset link is invalid or has expired.</p>
+                        <p class="text-caption">Reset links are valid for 1 hour.</p>
+                        <q-btn color="amber-7" text-color="grey-10" to="/forgotPassword" class="q-mt-md">
+                            Request New Link
+                        </q-btn>
+                        <q-btn flat color="grey-7" to="/login" class="q-mt-md q-ml-sm">
+                            Back to Login
+                        </q-btn>
+                    </q-card-section>
+                </q-card>
+                
+                <q-form v-else @submit="resetPassword">
                     <q-card bordered class="my-card flat card-rounded q-pa-md">
                         <q-card-section>
                             <div class="text-h6">Reset Password</div>
@@ -51,6 +75,8 @@
         confirm_password: ref('')
     })
     const submitting = ref(false)
+    const validating = ref(true)
+    const isValidToken = ref(false)
     const rules = ref({
         required: val => !!val || 'Field is required',
         min: val => val.length >= 6 || 'Please use minimum of 6 characters',
@@ -58,23 +84,47 @@
     })
     
     // ===== METHODS =====
+     // Validate token on page load
+    const validateToken = async () => {
+        validating.value = true
+        try {
+            await fetch(`/auth/validateResetToken/${token}`, {
+                method: 'GET'
+            })
+            isValidToken.value = true
+        } catch (err) {
+            console.error('Token validation failed:', err)
+            isValidToken.value = false
+        } finally {
+            validating.value = false
+        }
+    }
 
     
     // API calls
     const resetPassword = async () => {
+        submitting.value = true
         try {
             const users = await fetch('/auth/resetPassword/'+token, {
                 method: 'POST',
                 body: { new_password: user.value.new_password }
             })
-            console.log('users:', users)
-            notification('positive', 'Password reset successfully!')
-            // navigateTo('/login')
+            notification('positive', 'Password reset successfully! Redirecting to login...')
+            setTimeout(() => {
+                navigateTo('/login')
+                submitting.value = false
+            }, 1500)
         } catch (err) {
             console.error('Change password failed:', err)
             notification('negative', 'Failed to reset password!')
+            submitting.value = false
         }
     }
+
+    // ===== LIFECYCLE HOOKS =====
+    onMounted(() => {
+        validateToken()
+    })
 </script>
 
 <style scoped>
