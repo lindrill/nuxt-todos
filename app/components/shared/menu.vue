@@ -43,7 +43,7 @@
                             <img src="https://cdn.quasar.dev/img/boy-avatar.png" />
                         </q-avatar>
                     </q-item-section>
-                    <q-item-section>{{ displayName }}</q-item-section>
+                    <q-item-section>{{ loggedUser }}</q-item-section>
                     <q-btn-dropdown size="12px" flat dense round dropdown-icon="arrow_drop_down">
                         <q-list>
                             <q-item clickable v-close-popup @click="changePassword">
@@ -82,7 +82,7 @@
 
 <script setup>
     // ===== REACTIVE VARIABLES =====
-    const { userInfo, logoutUser } = useAuth()
+    const { userInfo, logoutUser, restoreUserInfo } = useAuth()
     const { notification } = useTrigger()
     
     const submitting = ref(false)
@@ -112,8 +112,13 @@
     }
 
     // ===== COMPUTED PROPERTIES =====
-    const displayName = computed(() => {
-        return userInfo.value ? `${userInfo.value.first_name} ${userInfo.value.last_name}` : 'Loading...'
+    const loggedUser = computed(() => {
+        return userInfo.value ? userInfo.value.first_name + ' ' + userInfo.value.last_name : 'Loading...'
+    })
+
+    // ===== LIFECYCLE HOOKS =====
+    onMounted(() => {
+        restoreUserInfo()
     })
 </script>
 

@@ -3,6 +3,15 @@ export const useAuth = () => {
     const cookie = useCookie('tinker_auth_token')
     const token = useState('auth-token', () => null)
     const userInfo = useState('auth-user', () => null)
+
+    const restoreUserInfo = () => {
+        if (import.meta.client) {
+            const stored = localStorage.getItem('userInfo')
+            if (stored && !userInfo.value) {
+                userInfo.value = JSON.parse(stored)
+            }
+        }
+    }
     
     const loginUser = async (credentials) => {
         const data = await fetch('/auth/login', {
@@ -27,5 +36,5 @@ export const useAuth = () => {
     
     const isAuthenticated = computed(() => !!cookie.value)
     
-    return { userInfo, cookie, loginUser, logoutUser, isAuthenticated }
+    return { userInfo, cookie, loginUser, logoutUser, isAuthenticated, restoreUserInfo }
 }
