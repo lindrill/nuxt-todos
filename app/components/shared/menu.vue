@@ -123,5 +123,7 @@
 </script>
 
 <style scoped>
-
+.menu {
+    min-height: 100dvh;
+}
 </style>

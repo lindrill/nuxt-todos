@@ -1,0 +1,126 @@
+<template>
+    <q-card class="my-card sidebar-card card-rounded bg-layer">
+        <q-card-section>
+            <span class="text-subtitle1 sidebar-title q-mt-md">Calendar</span>
+            <q-date
+                v-model="date"
+                :model-value="date"
+                minimal
+                flat
+                :navigation-min-year-month="minDate"
+                :navigation-max-year-month="maxDate"
+                color="amber"
+                text-color="white"
+                class="custom-calendar"
+            />
+
+            <q-card class="my-card card-rounded">
+                <q-card-section>
+                    <div class="q-pa-md">
+                        <q-list>
+                            <q-item
+                            v-for="activity in activities"
+                            :key="'id_here'"
+                            class="q-my-md"
+                            flat
+                            clickable
+                            v-ripple
+                            >
+                            <q-item-section avatar>
+                                <q-icon color="blue" size="22px" :name="'fa-solid fa-' + activity.icon" />
+                            </q-item-section>
+
+                            <q-item-section>
+                                <q-item-label>{{ activity.name }}</q-item-label>
+                                <q-item-label caption lines="1">{{ activity.category }}</q-item-label>
+                            </q-item-section>
+                            </q-item>
+                        </q-list>
+                    </div>
+                </q-card-section>
+            </q-card>
+        </q-card-section>
+    </q-card>
+</template>
+
+<script setup>
+    import { ref } from 'vue'
+
+    const date = ref('2026/06/20')
+    const minDate = ref('2020/01')  // January 2020
+    const maxDate = ref('2030/12')  // December 2030
+
+    const activities = [
+        {
+            id: 1,
+            icon: 'burger',
+            name: 'Brunch this weekend',
+            category: 'Vacation'
+        },
+            {
+            id: 2,
+            icon: 'wifi',
+            name: 'Pay internet bill',
+            category: 'Payments'
+        },
+            {
+            id: 3,
+            icon: 'hands-bubbles',
+            name: 'Do the laundry',
+            category: 'Chores'
+        },
+            {
+            id: 4,
+            icon: 'capsules',
+            name: 'Buy headache medicine',
+            category: 'Groceries'
+        },
+            {
+            id: 5,
+            icon: 'pizza-slice',
+            name: 'Recipe to try',
+            category: 'Chores'
+        },
+    ]
+</script>
+
+<style scoped>
+.custom-calendar {
+    background-color: #2e384e;
+    color: white !important;
+    width: 100%;
+    margin-top: 10px;
+    /* background-color: #3c4557; */
+    /* border-radius: 8px; */
+}
+
+/* Selected date text color */
+/* .custom-calendar :deep(.q-date__calendar-item--in .q-btn__content) {
+    color: white !important;
+} */
+ 
+/* Or target the selected state more specifically */
+.custom-calendar :deep(.q-btn.bg-amber .q-btn__content) {
+    color: black !important;
+}
+
+.sidebar-title {
+    color: white;
+}
+
+.sidebar-card {
+    min-height: 100dvh;
+}
+/* .custom-calendar :deep(.q-date__header) {
+    color: white !important;
+} */
+
+/* calendar dates */
+/* .custom-calendar :deep(.q-date__calendar-item .q-btn) {
+    color: white !important;
+} */
+
+/* .custom-calendar :deep(.q-date__calendar-weekdays) {
+    color: white !important;
+} */
+</style>
