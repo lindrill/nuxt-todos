@@ -60,7 +60,8 @@
 </template>
 
 <script setup>
-    const { fetch, apiBase } = useApi()
+    const { fetch } = useApi()
+    const { userInfo } = useAuth()
 
     // ===== REACTIVE VARIABLES =====
     const emit = defineEmits(['cancelNewTaskDialog', 'saveNewTodo'])
@@ -69,7 +70,8 @@
         description: "",
         dueDate: "",
         time: "",
-        completed: false
+        completed: false,
+        createdBy: userInfo.value._id
     })
     const time = ref('10:56')
     const timeWithSeconds = ref('10:56:00')
