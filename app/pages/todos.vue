@@ -28,16 +28,35 @@
                                     </q-item-section>
 
                                     <q-item-section class="col-4">
-                                        <q-item-label class="">{{ todo.title }}</q-item-label>
+                                        <q-item-label lines="1">
+                                            <span class="q-mr-xs">{{ todo.title }}</span>
+                                            <q-chip v-if="todo.category" color="grey-2" text-color="amber-7" class="chip-icon q-px-sm q-ml-sm">
+                                                <q-icon :name="`fa-solid fa-${todo.category?.icon}`" text-color="grey-8" size="14px">
+                                                    <q-tooltip class="bg-amber-7 text-black" :offset="[10, 10]">{{ todo.category?.title }}</q-tooltip>
+                                                </q-icon>
+                                            </q-chip>
+                                            <q-chip :color="getStatusColor(todo.status)" :text-color="'black'" size="sm" class="q-px-sm q-ml-xs">
+                                                {{ todo.status }}
+                                            </q-chip>
+                                        </q-item-label>
                                     </q-item-section>
 
-                                    <q-item-section>
-                                        
-                                    </q-item-section>
+                                    <q-item-section></q-item-section>
 
                                     <q-item-section side>
                                         <div class="text-grey-8 q-gutter-xs">
-                                            <q-btn-dropdown size="12px" flat dense round dropdown-icon="more_vert">
+                                            <q-avatar color="purple" text-color="white" size="28px" class="overlapping q-mt-none">
+                                                {{ getNameInitials(todo.createdBy) }}
+                                            </q-avatar>
+                                            <q-chip  color="grey-2" text-color="grey-8" class="chip-due q-mt-sm q-ml-sm">
+                                                <q-icon name="fa-regular fa-calendar" text-color="grey-8" size="14px" class="q-mr-xs" />
+                                                {{ formatDate(todo.dueDate) }}
+                                            </q-chip>
+                                            <q-chip  color="grey-2" text-color="grey-8" class="chip-due q-mt-sm">
+                                                <q-icon name="fa-regular fa-clock" text-color="grey-8" size="14px" class="q-mr-xs" />
+                                                {{ formatTime(todo.time) }}
+                                            </q-chip>
+                                            <q-btn-dropdown size="12px" dense unelevated color="grey-2" text-color="grey-8" dropdown-icon="more_vert" class="btn-action q-ml-xs">
                                                 <q-list>
                                                     <q-item clickable v-close-popup @click="todoActions('view', todo)">
                                                         <q-item-section avatar>
@@ -113,6 +132,7 @@
 </template>
 <script setup>
     import { useQuasar } from 'quasar'
+    import moment from 'moment'
     
     // ===== REACTIVE VARIABLES =====
     const $q = useQuasar()
@@ -199,18 +219,36 @@
     const fetchCategories = async () => {
         try {
             const response = await fetch('/categories/all', { params: { userId: userInfo.value._id } })
-            console.log('fetch cats', response)
             categories.value = response
         } catch (err) {
             console.error('Fetch failed:', err)
         }
+    }
+    const getNameInitials = (user) => {
+        const name = user.first_name + ' ' + user.last_name
+        return name.match(/(\b\S)?/g).join("").match(/(^\S|\S$)?/g).join("").toUpperCase()
+    }
+    const getStatusColor = (status) => {
+        switch (status) {
+            case 'pending':
+                return 'blue-3'
+            case 'completed':
+                return 'green-3'
+            default:
+                return 'grey-2'
+        }
+    }
+    const formatDate = (date) => {
+        return moment(date).format('MMMM DD, YYYY')
+    }
+    const formatTime = (time) => {
+        return moment(time, 'HH:mm').format('h:mm A'); 
     }
     
     // ===== COMPUTED PROPERTIES =====
     const maxPages = computed(() => {
         return Math.ceil(totalTodos.value / limit.value)
     })
-
     const skip = computed(() => {
         return (currentPage.value - 1) * limit.value
     })
@@ -236,7 +274,7 @@
     background-color: white;
 }
 .todo-rounded {
-    border-radius: 10px;
+    border-radius: 15px;
 }
 .no-data p {
     color: white;
@@ -245,4 +283,19 @@
     font-style: italic;
     font-size: 12px;
 }
+.btn-action, .chip-due, .chip-icon {
+    border-radius: 10px !important;
+}
+.chip-due {
+    font-size: 12px;
+    padding: 14px 10px !important;
+}
+.overlapping {
+    box-shadow: 0 0 0 2px #f5f5f5;
+    display: inline-block;
+}
+.overlapping:not(:first-child) {
+    margin-left: -5px;
+}
+  
 </style>

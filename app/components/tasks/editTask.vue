@@ -54,7 +54,7 @@
                         </div>
                         <div class="q-my-sm">
                             <label for="description">Description</label>
-                            <q-input filled autogrow v-model="clonedTodo.description" color="amber-7" lazy-rules :rules="[rules.required]"/>
+                            <q-input filled autogrow v-model="clonedTodo.description" color="amber-7" lazy-rules/>
                         </div>
                         <div class="q-my-sm">
                             <label for="description">Date</label>
