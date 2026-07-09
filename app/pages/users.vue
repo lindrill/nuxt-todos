@@ -47,6 +47,9 @@
                     </q-card>
                 </div>
             </div>
+            <div class="col-3 q-pa-md items-start q-gutter-md q-mt-sm">
+                <SharedSidebar />
+            </div>
         </div>
         <div>
             <q-dialog v-model="openNewUserDialog" backdrop-filter="blur(4px)" persistent>

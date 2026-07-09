@@ -9,6 +9,49 @@
                             <label for="title" >Task Name</label>
                             <q-input filled v-model="clonedTodo.title" color="amber-7" lazy-rules :rules="[rules.required]"/>
                         </div>
+                        <div class="q-mb-lg">
+                            <label for="title">Category</label>
+                            <q-select 
+                                filled 
+                                v-model="clonedTodo.category" 
+                                color="amber-7" 
+                                :options="catOptions" 
+                                option-value="_id" 
+                                option-label="title" 
+                                emit-value
+                                map-options
+                                use-input
+                                use-chips
+                                stack-label
+                                @filter="filterCategory"
+                                clearable
+                                >
+                                <template v-slot:selected>
+                                    <q-chip
+                                        v-if="clonedTodo.category"
+                                        dense
+                                        square
+                                        color="white"
+                                        text-color="amber-7"
+                                        class="q-my-none q-ml-xs q-mr-none"
+                                    >
+                                    <q-avatar color="amber-7" text-color="white" :icon="'fa-solid fa-'+selectedCategory?.icon" />
+                                        {{ selectedCategory?.title }}
+                                    </q-chip>
+                                    <!-- <q-badge v-else>*none*</q-badge> -->
+                                </template>
+                                <template v-slot:option="scope">
+                                    <q-item v-bind="scope.itemProps">
+                                        <q-item-section avatar>
+                                            <q-icon :name="'fa-solid fa-'+scope.opt.icon" size="24px" />
+                                        </q-item-section>
+                                        <q-item-section>
+                                            <q-item-label>{{ scope.opt.title }}</q-item-label>
+                                        </q-item-section>
+                                    </q-item>
+                                </template>
+                            </q-select>
+                        </div>
                         <div class="q-my-sm">
                             <label for="description">Description</label>
                             <q-input filled autogrow v-model="clonedTodo.description" color="amber-7" lazy-rules :rules="[rules.required]"/>
@@ -63,8 +106,9 @@
 
 <script setup>
     const { fetch, apiBase } = useApi()
-    const props = defineProps(['todo'])
+    const props = defineProps(['todo', 'categories'])
     const emit = defineEmits(['cancelEditTaskDialog', 'updateTodo'])
+    const catOptions = ref(props.categories)
 
     // ===== REACTIVE VARIABLES =====
     const clonedTodo = ref({ ...props.todo })
@@ -76,9 +120,25 @@
     const cancelEditTaskDialog = () => {
         emit('cancelEditTaskDialog', false) 
     }
+    const filterCategory = (val, update, abort) => {
+        update(() => {
+            if (val === '') {
+                catOptions.value = props.categories
+            } else {
+                const search = val.toLowerCase()
+                catOptions.value = props.categories.filter(v => v.title.toLowerCase().includes(search))
+            }
+        })
+    }
+
+    // ===== COMPUTED PROPERTIES =====
+    const selectedCategory = computed(() => {
+        return props.categories.find(cat => cat._id === clonedTodo.value.category)
+    })
     
     // API calls
     const updateTodo = async () => {
+        console.log('update todo', clonedTodo.value)
         try {
             await fetch('/todos/'+props.todo._id, {
                 method: 'PATCH',
@@ -89,4 +149,8 @@
             console.error('update todo failed:', err)
         }
     }
+
+    onMounted(() => {
+        // console.log('edit task mounted', props.categories)
+    })
 </script>

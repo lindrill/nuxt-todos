@@ -93,13 +93,13 @@
                             <div class="categories-container">
                                 <div class="categories-header row justify-between items-center q-mb-lg">
                                     <span class="text-subtitle1 text-white">Categories</span>
-                                    <q-btn color="amber-7" text-color="grey-10" rounded class="q-mt-md">
+                                    <q-btn color="amber-7" text-color="grey-10" rounded class="q-mt-md" @click="openNewCategoryDialog = true">
                                         <q-icon left size="1em" name="fa-solid fa-plus" />
                                         <div>New Category</div>
                                     </q-btn>
                                 </div>
                                 <div class="row q-col-gutter-lg">
-                                    <div v-for="category in categories" :key="category.id" class="col-3">
+                                    <div v-for="category in categories1" :key="category.id" class="col-3">
                                         <q-card class="category-card card-rounded text-center cursor-pointer" flat>
                                             <q-card-section class="q-py-lg">
                                                 <q-icon :name="category.icon" size="1.5rem" color="white" class="q-mb-sm"/>
@@ -120,7 +120,10 @@
         </div>
         <div>
             <q-dialog v-model="openNewTaskDialog" backdrop-filter="blur(4px)" persistent>
-                <TasksNewTask @cancelNewTaskDialog="cancelNewTaskDialog" @saveNewTodo="saveNewTodo"/>
+                <TasksNewTask :categories="categories" @cancelNewTaskDialog="cancelNewTaskDialog" @saveNewTodo="saveNewTodo"/>
+            </q-dialog>
+            <q-dialog v-model="openNewCategoryDialog" backdrop-filter="blur(4px)" persistent>
+                <CategoriesNewCategory @cancelNewCategoryDialog="cancelNewCategoryDialog" @saveNewCategory="saveNewCategory"/>
             </q-dialog>
         </div>
     </div>
@@ -137,24 +140,42 @@
 
     const openNewTaskDialog = ref(false)
     const openNewCategoryDialog = ref(false)
-    const categories = ref([
+    const categories1 = ref([
         { id: 1, name: 'Vacation', icon: 'fa-solid fa-umbrella-beach' },
         { id: 2, name: 'Groceries', icon: 'fa-solid fa-cart-shopping' },
         { id: 3, name: 'Chores', icon: 'fa-solid fa-broom' },
         { id: 4, name: 'Payments', icon: 'fa-solid fa-money-bill' }
     ])
+    const categories = ref([])
     
 
     // ===== METHODS =====
     const cancelNewTaskDialog = (cancelNewTaskDialog) => {
         openNewTaskDialog.value = cancelNewTaskDialog
     }
+    const cancelNewCategoryDialog = (cancelNewCategoryDialog) => {
+        openNewCategoryDialog.value = cancelNewCategoryDialog
+    }
     const saveNewTodo = () => {
         openNewTaskDialog.value = false
         notification('positive', 'Task successfully saved!')
     }
+    const saveNewCategory    = () => {
+        openNewCategoryDialog.value = false
+        notification('positive', 'Category successfully saved!')
+        fetchCategories()
+    }
     
     // API calls
+    const fetchCategories = async () => {
+        try {
+            const response = await fetch('/categories/all', { params: { userId: userInfo.value._id } })
+            console.log('fetch cats', response)
+            categories.value = response
+        } catch (err) {
+            console.error('Fetch failed:', err)
+        }
+    }
     
     // ===== COMPUTED PROPERTIES =====
     
@@ -162,6 +183,7 @@
     // ===== LIFECYCLE HOOKS =====
 
     onMounted(() => {
+        fetchCategories()
     })
 
 </script>

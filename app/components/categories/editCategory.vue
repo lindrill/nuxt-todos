@@ -1,0 +1,77 @@
+<template>
+    <div>
+        <q-card style="width: 500px">
+            <q-form @submit="updateCategory">
+                <q-card-section class="q-mx-md">
+                    <div class="text-h6 q-my-lg q-pb-sm">Edit Category</div>
+                    <div class="q-my-sm">
+                        <label for="title">Category Name</label>
+                        <q-input filled v-model="clonedCategory.title" color="amber-7" lazy-rules :rules="[rules.required]"/>
+                    </div>
+                    <div class="q-my-sm">
+                        <label for="icon">Icon</label>
+                        <ReusablesIconPicker v-model="clonedCategory.icon" />
+                    </div>
+                </q-card-section>
+                <q-card-actions align="right" class="q-pa-lg">
+                    <q-btn flat label="Cancel" color="amber-7" text-color="black" :loading="submitting" :disable="submitting" @click="cancelEditCategoryDialog"/>
+                    <q-btn type="submit" label="Save" color="amber-7" text-color="black"/>
+                </q-card-actions>
+            </q-form>
+        </q-card>
+    </div>
+</template>
+
+<script setup>
+    const { fetch } = useApi()
+    const { userInfo } = useAuth()
+
+    // ===== REACTIVE VARIABLES =====
+    const props = defineProps(['category', 'categories'])
+    const emit = defineEmits(['cancelEditCategoryDialog', 'updateCategory'])
+    const catOptions = ref(props.categories)
+    const clonedCategory = ref({ ...props.category })
+    // const newCategory = ref({
+    //     title: "",
+    //     icon: "",
+    //     createdBy: userInfo.value._id
+    // })
+    const rules = ref({
+        required: val => !!val || 'Field is required'
+    })
+    const submitting = ref(false)
+    
+    // ===== METHODS =====
+    const cancelEditCategoryDialog = () => {
+        emit('cancelEditCategoryDialog', false) 
+    }
+    
+    // API calls
+    const updateCategory = async () => {
+        // submitting.value = true
+        // try {
+        //     await fetch('/categories/new', {
+        //         method: 'POST',
+        //         body: clonedCategory.value
+        //     })
+        //     emit('updateCategory')
+        // } catch (err) {
+        //     console.error('Add category failed:', err)
+        // } finally {
+        //     submitting.value = false
+        // }
+
+        try {
+            console.log('updateCategory', clonedCategory.value)
+            await fetch('/categories/'+clonedCategory.value._id, {
+                method: 'PATCH',
+                body: clonedCategory.value
+            })
+            emit('updateCategory')
+        } catch (err) {
+            console.error('update category failed:', err)
+        } finally {
+            submitting.value = false
+        }
+    }
+</script>

@@ -6,7 +6,7 @@
                     <div class="text-h6 q-my-lg q-pb-sm">Change Password for {{ props.user.first_name }} {{ props.user.last_name }}</div>
                     <div class="q-my-sm" v-if="props.page === 'profile'">
                         <label for="first_name">Current Password</label>
-                        <q-input type="password" filled v-model="clonedUser.current_password" color="amber-7" lazy-rules debounce="500" :rules="[rules.required, rules.verifyCurrentPassword]"/>
+                        <q-input type="password" filled v-model="clonedUser.current_password" color="amber-7" lazy-rules debounce="500" :rules="[rules.required, rules.verifyCurrentPwd]"/>
                     </div>
                     <div class="q-my-sm">
                         <label for="first_name">New Password</label>

@@ -6,32 +6,34 @@
                     <q-item-section avatar>
                         <q-icon color="blue-grey-4" size="22px" name="fa-solid fa-chart-column" />
                     </q-item-section>
-
                     <q-item-section>Dashboard</q-item-section>
                 </q-item>
 
                 <q-item clickable v-ripple to="/todos">
                     <q-item-section avatar>
-                    <q-icon color="blue-grey-4" size="22px" name="fa-regular fa-clipboard" />
+                        <q-icon color="blue-grey-4" size="22px" name="fa-regular fa-clipboard" />
                     </q-item-section>
-
                     <q-item-section>Todos</q-item-section>
+                </q-item>
+
+                <q-item clickable v-ripple to="/categories">
+                    <q-item-section avatar>
+                        <q-icon color="blue-grey-4" size="22px" name="fa-solid fa-grip" />
+                    </q-item-section>
+                    <q-item-section>Categories</q-item-section>
                 </q-item>
 
                 <q-item clickable v-ripple to="/users">
                     <q-item-section avatar>
-                    <q-icon color="blue-grey-4" size="22px" name="fa-solid fa-people-group" />
+                        <q-icon color="blue-grey-4" size="22px" name="fa-solid fa-people-group" />
                     </q-item-section>
-                    
-
                     <q-item-section>Users</q-item-section>
                 </q-item>
 
                 <q-item clickable v-ripple to="/settings">
                     <q-item-section avatar>
-                    <q-icon color="blue-grey-4" size="22px" name="fa-solid fa-gear" />
+                        <q-icon color="blue-grey-4" size="22px" name="fa-solid fa-gear" />
                     </q-item-section>
-
                     <q-item-section>Settings</q-item-section>
                 </q-item>
 

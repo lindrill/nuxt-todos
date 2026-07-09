@@ -14,7 +14,7 @@
                 </div>
             </div>
             <!-- Tasks -->
-            <div class="q-px-sm">
+            <div class="q-px-sm" v-if="todos.length > 0">
                 <q-card class="my-card bg-layer card-rounded" flat>
                     <q-card-section>
                         <div class="">
@@ -83,6 +83,12 @@
                             </div>
                         </div>
                     </q-card-section>
+
+                </q-card>
+            </div>
+            <div class="q-px-sm" v-else>
+                <q-card class="my-card bg-layer card-rounded no-data" flat>
+                    <p>No data available.</p>
                 </q-card>
             </div>
         </div>
@@ -91,13 +97,13 @@
         </div>
         <div>
             <q-dialog v-model="openNewTaskDialog" backdrop-filter="blur(4px)" persistent>
-                <TasksNewTask @cancelNewTaskDialog="cancelNewTaskDialog" @saveNewTodo="saveNewTodo"/>
+                <TasksNewTask :categories="categories" @cancelNewTaskDialog="cancelNewTaskDialog" @saveNewTodo="saveNewTodo"/>
             </q-dialog>
             <q-dialog v-model="openDeleteDialog" backdrop-filter="blur(4px)" persistent>
                 <ReusablesDeleteDialog :item="todo" :table="'todos'" @cancelDeleteDialog="cancelDeleteDialog" @deleteItem="deleteTodo"/>
             </q-dialog>
             <q-dialog v-model="openEditTaskDialog" backdrop-filter="blur(4px)" persistent>
-                <TasksEditTask :todo="todo" @cancelEditTaskDialog="cancelEditTaskDialog" @updateTodo="updateTodo"/>
+                <TasksEditTask :todo="todo" :categories="categories" @cancelEditTaskDialog="cancelEditTaskDialog" @updateTodo="updateTodo"/>
             </q-dialog>
             <q-dialog v-model="openViewTaskDialog" backdrop-filter="blur(4px)" persistent>
                 <TasksViewTask :todo="todo" @cancelViewTaskDialog="cancelViewTaskDialog"/>
@@ -124,6 +130,7 @@
     const currentPage = ref(1)
     const totalTodos = ref([])
     const limit = ref(10) // todos pagination limit
+    const categories = ref([])
     
 
     // ===== METHODS =====
@@ -145,6 +152,7 @@
     }
     const todoActions = (action, selectedTodo) => {
         todo.value = selectedTodo
+        console.log('selected todo', todo.value)
         if(action == "edit") {
             openEditTaskDialog.value = true
         } else if(action == "delete") {
@@ -188,6 +196,15 @@
         notification('positive', 'Task successfully updated!')
         fetchTodos()
     }
+    const fetchCategories = async () => {
+        try {
+            const response = await fetch('/categories/all', { params: { userId: userInfo.value._id } })
+            console.log('fetch cats', response)
+            categories.value = response
+        } catch (err) {
+            console.error('Fetch failed:', err)
+        }
+    }
     
     // ===== COMPUTED PROPERTIES =====
     const maxPages = computed(() => {
@@ -203,6 +220,7 @@
 
     onMounted(() => {
         fetchTodos()
+        fetchCategories()
     })
 
     // watch
@@ -219,5 +237,12 @@
 }
 .todo-rounded {
     border-radius: 10px;
+}
+.no-data p {
+    color: white;
+    text-align: center;
+    padding: 10px;
+    font-style: italic;
+    font-size: 12px;
 }
 </style>

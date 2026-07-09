@@ -45,8 +45,11 @@
         if(props.table === 'todos') {
             return 'task'
         }
+        if(props.table === 'categories') {
+            return 'category'
+        }
 
-        let str = props.table.slice(0, -1); // removes 's' from the string (todos -> todo)
-        return str
+        // let str = props.table.slice(0, -1); // removes 's' from the string (todos -> todo)
+        return props.table
     })
 </script>

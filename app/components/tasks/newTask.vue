@@ -5,8 +5,49 @@
                 <q-card-section class="q-mx-md">
                     <div class="text-h6 q-my-lg q-pb-sm">New Task</div>
                     <div class="q-my-sm">
-                        <label for="title" >Task Name</label>
+                        <label for="title">Task Name</label>
                         <q-input filled v-model="newTodo.title" color="amber-7" lazy-rules :rules="[rules.required]"/>
+                    </div>
+                    <div class="q-mb-lg">
+                        <label for="title">Category</label>
+                        <q-select 
+                            filled 
+                            v-model="newTodo.category" 
+                            color="amber-7" 
+                            :options="catOptions" 
+                            option-value="_id" 
+                            option-label="title" 
+                            use-input
+                            use-chips
+                            stack-label
+                            @filter="filterCategory"
+                            clearable
+                            >
+                            <template v-slot:selected>
+                                <q-chip
+                                v-if="newTodo.category"
+                                dense
+                                square
+                                color="white"
+                                text-color="amber-7"
+                                class="q-my-none q-ml-xs q-mr-none"
+                                >
+                                <q-avatar color="amber-7" text-color="white" :icon="'fa-solid fa-'+newTodo.category.icon" />
+                                {{ newTodo.category.title }}
+                                </q-chip>
+                                <!-- <q-badge v-else>*none*</q-badge> -->
+                            </template>
+                            <template v-slot:option="scope">
+                                <q-item v-bind="scope.itemProps">
+                                    <q-item-section avatar>
+                                        <q-icon :name="'fa-solid fa-'+scope.opt.icon" size="24px" />
+                                    </q-item-section>
+                                    <q-item-section>
+                                        <q-item-label>{{ scope.opt.title }}</q-item-label>
+                                    </q-item-section>
+                                </q-item>
+                            </template>
+                        </q-select>
                     </div>
                     <div class="q-my-sm">
                         <label for="description">Description</label>
@@ -65,9 +106,11 @@
 
     // ===== REACTIVE VARIABLES =====
     const emit = defineEmits(['cancelNewTaskDialog', 'saveNewTodo'])
+    const props = defineProps(['categories'])
     const newTodo = ref({
         title: "",
         description: "",
+        category: "",
         dueDate: "",
         time: "",
         completed: false,
@@ -78,14 +121,27 @@
     const rules = ref({
         required: val => !!val || 'Field is required'
     })
+    const catOptions = ref(props.categories)
     
     // ===== METHODS =====
     const cancelNewTaskDialog = () => {
         emit('cancelNewTaskDialog', false) 
     }
+    const filterCategory = (val, update, abort) => {
+        update(() => {
+            if (val === '') {
+                catOptions.value = props.categories
+            } else {
+                const search = val.toLowerCase()
+                catOptions.value = props.categories.filter(v => v.title.toLowerCase().includes(search))
+            }
+        })
+    }
     
     // API calls
     const saveNewTodo = async () => {
+        newTodo.value.category = newTodo.value.category._id
+        console.log('saveNewTodo', newTodo.value)
         try {
             await fetch('/todos/new', {
                 method: 'POST',
