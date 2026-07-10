@@ -1,14 +1,12 @@
 <template>
     <div>
         <div class="row">
-            <div class="col-3 q-pa-md items-start q-gutter-md q-mt-sm">
-                <SharedMenu />
-            </div>
+            <SharedMenu />
             <div class="page col-6">
                 <div class="page-header row justify-between q-mt-md q-px-md">
                     <h5 class="page-title">Dashboard</h5>
                     <div class="q-mt-lg">
-                        <q-btn color="amber-7" text-color="grey-10" rounded class="q-mt-md" @click="openNewTaskDialog = true">
+                        <q-btn color="amber-6" text-color="grey-10" rounded class="q-mt-md" @click="openNewTaskDialog = true">
                             <q-icon left size="1em" name="fa-solid fa-plus" />
                             <div>New Task</div>
                         </q-btn>
@@ -22,7 +20,7 @@
                                     <q-list>
                                         <q-item>
                                             <q-item-section avatar>
-                                                <q-icon left color="amber-7" name="fa-regular fa-calendar-check" />
+                                                <q-icon left color="amber-6" name="fa-regular fa-calendar-check" />
                                             </q-item-section>
                                             <q-item-section>
                                                 <q-item-label class="text-weight-bold text-subtitle1">12 Tasks</q-item-label>
@@ -52,7 +50,7 @@
                                     <q-list>
                                         <q-item>
                                             <q-item-section avatar>
-                                                <q-icon left color="amber-7" name="fa-solid fa-hourglass-half" />
+                                                <q-icon left color="amber-6" name="fa-solid fa-hourglass-half" />
                                             </q-item-section>
                                             <q-item-section>
                                                 <q-item-label class="text-weight-bold text-subtitle1">5 Tasks</q-item-label>
@@ -93,7 +91,7 @@
                             <div class="categories-container">
                                 <div class="categories-header row justify-between items-center q-mb-lg">
                                     <span class="text-subtitle1 text-white">Categories</span>
-                                    <q-btn color="amber-7" text-color="grey-10" rounded class="q-mt-md" @click="openNewCategoryDialog = true">
+                                    <q-btn color="amber-6" text-color="grey-10" rounded class="q-mt-md" @click="openNewCategoryDialog = true">
                                         <q-icon left size="1em" name="fa-solid fa-plus" />
                                         <div>New Category</div>
                                     </q-btn>
@@ -112,11 +110,8 @@
                         </q-card-section>
                     </q-card>
                 </div>
-                
             </div>
-            <div class="col-3 q-pa-md items-start q-gutter-md q-mt-sm">
-                <SharedSidebar />
-            </div>
+            <SharedSidebar />
         </div>
         <div>
             <q-dialog v-model="openNewTaskDialog" backdrop-filter="blur(4px)" persistent>

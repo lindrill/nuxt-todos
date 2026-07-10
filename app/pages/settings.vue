@@ -12,7 +12,7 @@
                             <div class="q-pa-md">
                                 <q-splitter v-model="splitterModel">
                                     <template v-slot:before>
-                                        <q-tabs v-model="tab" vertical class="text-amber-7" align="left" inline-label>
+                                        <q-tabs v-model="tab" vertical class="text-amber-6" align="left" inline-label>
                                             <q-tab name="users" icon="mail" label="Mails" />
                                             <q-tab name="alarms" icon="alarm" label="Alarms" />
                                             <q-tab name="movies" icon="movie" label="Movies" />

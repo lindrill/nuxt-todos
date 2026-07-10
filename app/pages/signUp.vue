@@ -5,7 +5,7 @@
                 <q-card bordered class="my-card flat card-rounded q-pa-md">
                     <q-card-section>
                         <div class="text-h6">Sign Up to Tinker 
-                            <q-icon name="fa-solid fa-cloud-bolt" class="q-ml-sm" color="amber-7" size="32px"/>
+                            <q-icon name="fa-solid fa-cloud-bolt" class="q-ml-sm" color="amber-6" size="32px"/>
                         </div>
                     </q-card-section>
 
@@ -14,32 +14,32 @@
                     <q-card-section>
                         <q-form @submit="signUp">
                             <div class="q-my-md">
-                                <q-input color="amber-7" filled dense v-model="user.first_name" placeholder="First Name" :rules="[rules.required]">
+                                <q-input color="amber-6" filled dense v-model="user.first_name" placeholder="First Name" :rules="[rules.required]">
                                 </q-input>
                             </div>
                             <div class="q-my-md">
-                                <q-input color="amber-7" filled dense v-model="user.last_name" placeholder="Last Name" :rules="[rules.required]">
+                                <q-input color="amber-6" filled dense v-model="user.last_name" placeholder="Last Name" :rules="[rules.required]">
                                 </q-input>
                             </div>
                             <div class="q-my-md">
-                                <q-input type="email" color="amber-7" filled dense v-model="user.email" placeholder="Email" :rules="[rules.required, rules.email]">
+                                <q-input type="email" color="amber-6" filled dense v-model="user.email" placeholder="Email" :rules="[rules.required, rules.email]">
                                 </q-input>
                             </div>
                             <div class="q-my-md">
-                                <q-input type="password" color="amber-7" filled dense v-model="user.password" placeholder="Password" :rules="[rules.required, rules.min]">
+                                <q-input type="password" color="amber-6" filled dense v-model="user.password" placeholder="Password" :rules="[rules.required, rules.min]">
                                     <template v-slot:prepend>
                                         <q-icon name="fa-solid fa-lock" class="q-mr-sm"/>
                                     </template>
                                 </q-input>
                             </div>
                             <div class="q-my-md">
-                                <q-input type="password" color="amber-7" filled dense v-model="confirm_password" :rules="[rules.required, rules.matchPwd]" placeholder="Confirm Password">
+                                <q-input type="password" color="amber-6" filled dense v-model="confirm_password" :rules="[rules.required, rules.matchPwd]" placeholder="Confirm Password">
                                     <template v-slot:prepend>
                                         <q-icon name="fa-solid fa-lock" class="q-mr-sm"/>
                                     </template>
                                 </q-input>
                             </div>
-                            <q-btn type="submit" color="amber-7" text-color="grey-10" :loading="submitting" :disable="submitting" unelevated class="q-mt-sm login-btn q-py-sm">
+                            <q-btn type="submit" color="amber-6" text-color="grey-10" :loading="submitting" :disable="submitting" unelevated class="q-mt-sm login-btn q-py-sm">
                                 <div>Sign Up</div>
                             </q-btn>
                         </q-form>

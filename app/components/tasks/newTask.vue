@@ -6,14 +6,14 @@
                     <div class="text-h6 q-my-lg q-pb-sm">New Task</div>
                     <div class="q-my-sm">
                         <label for="title">Task Name</label>
-                        <q-input filled v-model="newTodo.title" color="amber-7" lazy-rules :rules="[rules.required]"/>
+                        <q-input filled v-model="newTodo.title" color="amber-6" lazy-rules :rules="[rules.required]"/>
                     </div>
                     <div class="q-mb-lg">
                         <label for="title">Category</label>
                         <q-select 
                             filled 
                             v-model="newTodo.category" 
-                            color="amber-7" 
+                            color="amber-6" 
                             :options="catOptions" 
                             option-value="_id" 
                             option-label="title" 
@@ -29,10 +29,10 @@
                                 dense
                                 square
                                 color="white"
-                                text-color="amber-7"
+                                text-color="amber-6"
                                 class="q-my-none q-ml-xs q-mr-none"
                                 >
-                                <q-avatar color="amber-7" text-color="white" :icon="'fa-solid fa-'+newTodo.category.icon" />
+                                <q-avatar color="amber-6" text-color="white" :icon="'fa-solid fa-'+newTodo.category.icon" />
                                 {{ newTodo.category.title }}
                                 </q-chip>
                                 <!-- <q-badge v-else>*none*</q-badge> -->
@@ -51,7 +51,7 @@
                     </div>
                     <div class="q-my-sm">
                         <label for="description">Description</label>
-                        <q-input filled autogrow v-model="newTodo.description" color="amber-7"/>
+                        <q-input filled autogrow v-model="newTodo.description" color="amber-6"/>
                     </div>
                     <div class="q-my-sm">
                         <label for="date">Date</label>
@@ -92,8 +92,8 @@
                     </div>
                 </q-card-section>
                 <q-card-actions align="right" class="q-pa-lg">
-                    <q-btn flat label="Cancel" color="amber-7" text-color="black" @click="cancelNewTaskDialog"/>
-                    <q-btn type="submit" label="Save" color="amber-7" text-color="black"/>
+                    <q-btn flat label="Cancel" color="amber-6" text-color="black" @click="cancelNewTaskDialog"/>
+                    <q-btn type="submit" label="Save" color="amber-6" text-color="black"/>
                 </q-card-actions>
             </q-form>
         </q-card>

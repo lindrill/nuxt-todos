@@ -6,21 +6,21 @@
                     <div class="text-h6 q-my-lg q-pb-sm">Change Password for {{ props.user.first_name }} {{ props.user.last_name }}</div>
                     <div class="q-my-sm" v-if="props.page === 'profile'">
                         <label for="first_name">Current Password</label>
-                        <q-input type="password" filled v-model="clonedUser.current_password" color="amber-7" lazy-rules debounce="500" :rules="[rules.required, rules.verifyCurrentPwd]"/>
+                        <q-input type="password" filled v-model="clonedUser.current_password" color="amber-6" lazy-rules debounce="500" :rules="[rules.required, rules.verifyCurrentPwd]"/>
                     </div>
                     <div class="q-my-sm">
                         <label for="first_name">New Password</label>
-                        <q-input type="password" filled v-model="clonedUser.new_password" color="amber-7" lazy-rules debounce="500" :rules="[rules.required, rules.min, rules.verifyUniqueNewPwd]"/>
+                        <q-input type="password" filled v-model="clonedUser.new_password" color="amber-6" lazy-rules debounce="500" :rules="[rules.required, rules.min, rules.verifyUniqueNewPwd]"/>
                     </div>
                     <div class="q-my-sm">
                         <label for="first_name">Confirm New Password</label>
-                        <q-input type="password" filled v-model="clonedUser.confirm_password" color="amber-7" lazy-rules :rules="[rules.required, rules.min, rules.matchPwd]"/>
+                        <q-input type="password" filled v-model="clonedUser.confirm_password" color="amber-6" lazy-rules :rules="[rules.required, rules.min, rules.matchPwd]"/>
                     </div>
                     
                 </q-card-section>
                 <q-card-actions align="right" class="q-pa-lg">
-                    <q-btn flat label="Cancel" color="amber-7" text-color="black" @click="cancelChangePasswordDialog"/>
-                    <q-btn type="submit" label="Save" color="amber-7" text-color="black"/>
+                    <q-btn flat label="Cancel" color="amber-6" text-color="black" @click="cancelChangePasswordDialog"/>
+                    <q-btn type="submit" label="Save" color="amber-6" text-color="black"/>
                 </q-card-actions>
             </q-form>
         </q-card>

@@ -8,7 +8,7 @@
                 <div class="page-header row justify-between q-mt-md q-px-md">
                     <h6 class="page-title">Users</h6>
                     <div class="q-mt-lg">
-                        <q-btn color="amber-7" text-color="grey-10" rounded class="q-mt-md" @click="openNewUserDialog = true">
+                        <q-btn color="amber-6" text-color="grey-10" rounded class="q-mt-md" @click="openNewUserDialog = true">
                             <q-icon left size="1em" name="fa-solid fa-plus" />
                             <div>New User</div>
                         </q-btn>

@@ -20,7 +20,7 @@
                         debounce="500"
                         filled
                         placeholder="Search icons..."
-                        color="amber-7"
+                        color="amber-6"
                         class="q-mt-md"
                     >
                         <template v-slot:prepend>
@@ -48,8 +48,8 @@
                 </q-card-section>
 
                 <q-card-actions align="right">
-                    <q-btn flat label="Clear" color="amber-7" text-color="black" @click="clearSelection"/>
-                    <q-btn flat label="Close" color="amber-7" text-color="black" @click="showPicker = false"/>
+                    <q-btn flat label="Clear" color="amber-6" text-color="black" @click="clearSelection"/>
+                    <q-btn flat label="Close" color="amber-6" text-color="black" @click="showPicker = false"/>
                 </q-card-actions>
             </q-card>
         </q-dialog>

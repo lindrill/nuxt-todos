@@ -1,109 +1,121 @@
 <template>
-    <div class="row">
-        <div class="col-3 q-pa-md items-start q-gutter-md q-mt-sm">
-            <SharedMenu />
-        </div>
+    <div class="row ">
+        <SharedMenu />       
         <div class="page col-6">
-            <div class="page-header row justify-between q-mt-md q-px-md">
-                <h6 class="page-title">Todos</h6>
-                <div class="q-mt-lg">
-                    <q-btn color="amber-7" text-color="grey-10" rounded class="q-mt-md" @click="openNewTaskDialog = true">
+            <div class="page-header row justify-between q-px-md q-mt-lg">
+                <h6 class="page-title q-mt-md">Todos</h6>
+                <div>
+                    <q-btn color="amber-6" text-color="grey-10" rounded class="q-mt-md" @click="openNewTaskDialog = true">
                         <q-icon left size="1em" name="fa-solid fa-plus" />
                         <div>New Task</div>
                     </q-btn>
                 </div>
             </div>
             <!-- Tasks -->
-            <div class="q-px-sm" v-if="todos.length > 0">
-                <q-card class="my-card bg-layer card-rounded" flat>
-                    <q-card-section>
-                        <div class="">
-                            <q-list class="rounded-borders">
-                                <q-item class="todo-item q-my-sm todo-rounded" v-for="todo in todos" :key="todo._id">
-                                    <q-item-section avatar top>
-                                        <q-checkbox 
-                                            :model-value="todo.status == 'completed'" 
-                                            @update:model-value="markComplete(todo)"
-                                        />
-                                    </q-item-section>
+            <div class="q-px-md" v-if="todos.length > 0">
+                <q-list>
+                    <q-item class="todo-item q-my-sm todo-rounded" v-for="todo in todos" :key="todo._id">
+                        <!-- checkbox -->
+                        <q-item-section avatar top>
+                            <q-checkbox dark
+                                :model-value="todo.status == 'completed'" 
+                                @update:model-value="markComplete(todo)"
+                            />
+                        </q-item-section>
 
-                                    <q-item-section class="col-4">
-                                        <q-item-label lines="1">
-                                            <span class="q-mr-xs">{{ todo.title }}</span>
-                                            <q-chip v-if="todo.category" color="grey-2" text-color="amber-7" class="chip-icon q-px-sm q-ml-sm">
-                                                <q-icon :name="`fa-solid fa-${todo.category?.icon}`" text-color="grey-8" size="14px">
-                                                    <q-tooltip class="bg-amber-7 text-black" :offset="[10, 10]">{{ todo.category?.title }}</q-tooltip>
-                                                </q-icon>
-                                            </q-chip>
-                                            <q-chip :color="getStatusColor(todo.status)" :text-color="'black'" size="sm" class="q-px-sm q-ml-xs">
-                                                {{ todo.status }}
-                                            </q-chip>
-                                        </q-item-label>
-                                    </q-item-section>
-
-                                    <q-item-section></q-item-section>
-
-                                    <q-item-section side>
-                                        <div class="text-grey-8 q-gutter-xs">
-                                            <q-avatar color="purple" text-color="white" size="28px" class="overlapping q-mt-none">
-                                                {{ getNameInitials(todo.createdBy) }}
-                                            </q-avatar>
-                                            <q-chip  color="grey-2" text-color="grey-8" class="chip-due q-mt-sm q-ml-sm">
-                                                <q-icon name="fa-regular fa-calendar" text-color="grey-8" size="14px" class="q-mr-xs" />
-                                                {{ formatDate(todo.dueDate) }}
-                                            </q-chip>
-                                            <q-chip  color="grey-2" text-color="grey-8" class="chip-due q-mt-sm">
-                                                <q-icon name="fa-regular fa-clock" text-color="grey-8" size="14px" class="q-mr-xs" />
-                                                {{ formatTime(todo.time) }}
-                                            </q-chip>
-                                            <q-btn-dropdown size="12px" dense unelevated color="grey-2" text-color="grey-8" dropdown-icon="more_vert" class="btn-action q-ml-xs">
-                                                <q-list>
-                                                    <q-item clickable v-close-popup @click="todoActions('view', todo)">
-                                                        <q-item-section avatar>
-                                                            <q-avatar icon="fa-solid fa-eye" size="2em" color="green" text-color="white" />
-                                                        </q-item-section>
-                                                        <q-item-section>
-                                                            <q-item-label>View</q-item-label>
-                                                        </q-item-section>
-                                                    </q-item>
-
-                                                    <q-item clickable v-close-popup @click="todoActions('edit', todo)">
-                                                        <q-item-section avatar>
-                                                            <q-avatar icon="edit" size="2em" color="primary" text-color="white" />
-                                                        </q-item-section>
-                                                        <q-item-section>
-                                                            <q-item-label>Edit</q-item-label>
-                                                        </q-item-section>
-                                                    </q-item>
-
-                                                    <q-item clickable v-close-popup @click="todoActions('delete', todo)">
-                                                        <q-item-section avatar>
-                                                            <q-avatar icon="delete" size="2em" color="red" text-color="white" />
-                                                        </q-item-section>
-                                                        <q-item-section>
-                                                            <q-item-label>Delete</q-item-label>
-                                                        </q-item-section>
-                                                    </q-item>
-                                                </q-list>
-                                            </q-btn-dropdown>
-                                        </div>
-                                    </q-item-section>
-                                </q-item>
-                            </q-list>
-                            <div class="q-pa-lg flex flex-center">
-                                <q-pagination
-                                    v-model="currentPage"
-                                    color="amber-7"
-                                    :max="maxPages"
-                                    boundary-links
-                                    flat
-                                    size="12px"
-                                />
+                        <!-- category -->
+                        <q-item-section avatar>
+                            <q-icon v-if="todo.category" :name="`fa-solid fa-${todo.category?.icon}`" color="amber-6" size="18px">
+                                <q-tooltip class="bg-amber-6 text-black" :offset="[10, 10]">{{ todo.category?.title }}</q-tooltip>
+                            </q-icon>
+                        </q-item-section>
+                        
+                        <!-- title -->
+                        <q-item-section>
+                            <q-item-label>{{ todo.title }} </q-item-label>
+                        </q-item-section>
+                            
+                        <!-- status -->
+                        <q-item-section>
+                            <div class="q-gutter-xs">
+                                <q-chip  :text-color="getStatusTextColor(todo.status)" size="sm" class="q-px-sm q-ml-xs" :style="{ backgroundColor: getStatusBgColor(todo.status) }">
+                                    <span class="text-weight-medium">{{ todo.status }}</span>
+                                </q-chip>
                             </div>
-                        </div>
-                    </q-card-section>
+                        </q-item-section>
 
-                </q-card>
+                        <!-- due date -->
+                        <q-item-section class="col-2">
+                            <div class="row items-center">
+                                <q-icon name="fa-regular fa-calendar" color="grey-4" size="14px" class="q-mr-sm" />
+                                {{ formatDate(todo.dueDate) }}
+                            </div>
+                        </q-item-section>
+
+                        <!-- time -->
+                        <q-item-section class="col-2">
+                            <div class="row items-center">
+                                <q-icon name="fa-regular fa-clock" text-color="grey-8" size="14px" class="q-mr-sm" />
+                                {{ formatTime(todo.time) }}
+                            </div>
+                        </q-item-section>
+
+                        <!-- creator -->
+                        <q-item-section class="col-1">
+                            <div class="q-gutter-xs">
+                                <q-avatar color="deep-purple" text-color="white" size="28px" class="overlapping q-mt-none">
+                                    {{ getNameInitials(todo.createdBy) }}
+                                </q-avatar>
+                            </div>
+                        </q-item-section>
+                        
+                        <!-- actions -->
+                        <q-item-section side>
+                            <div class="text-grey-8 q-gutter-xs">
+                                <q-btn-dropdown size="12px" dense flat unelevated color="grey-4" text-color="grey-5" dropdown-icon="more_vert" class="btn-action q-ml-xs">
+                                    <q-list>
+                                        <q-item clickable v-close-popup @click="todoActions('view', todo)">
+                                            <q-item-section avatar>
+                                                <q-avatar icon="fa-solid fa-eye" size="2em" color="green" text-color="white" />
+                                            </q-item-section>
+                                            <q-item-section>
+                                                <q-item-label>View</q-item-label>
+                                            </q-item-section>
+                                        </q-item>
+
+                                        <q-item clickable v-close-popup @click="todoActions('edit', todo)">
+                                            <q-item-section avatar>
+                                                <q-avatar icon="edit" size="2em" color="primary" text-color="white" />
+                                            </q-item-section>
+                                            <q-item-section>
+                                                <q-item-label>Edit</q-item-label>
+                                            </q-item-section>
+                                        </q-item>
+
+                                        <q-item clickable v-close-popup @click="todoActions('delete', todo)">
+                                            <q-item-section avatar>
+                                                <q-avatar icon="delete" size="2em" color="red" text-color="white" />
+                                            </q-item-section>
+                                            <q-item-section>
+                                                <q-item-label>Delete</q-item-label>
+                                            </q-item-section>
+                                        </q-item>
+                                    </q-list>
+                                </q-btn-dropdown>
+                            </div>
+                        </q-item-section>
+                    </q-item>
+                </q-list>
+                <div class="q-py-lg flex item-start">
+                    <q-pagination
+                        gutter="md"
+                        v-model="currentPage"
+                        color="amber-6"
+                        :max="maxPages"
+                        direction-links
+                        size="12px"
+                    />
+                </div>
             </div>
             <div class="q-px-sm" v-else>
                 <q-card class="my-card bg-layer card-rounded no-data" flat>
@@ -111,9 +123,7 @@
                 </q-card>
             </div>
         </div>
-        <div class="col-3 q-pa-md items-start q-gutter-md q-mt-sm">
-            <SharedSidebar />
-        </div>
+        <SharedSidebar />
         <div>
             <q-dialog v-model="openNewTaskDialog" backdrop-filter="blur(4px)" persistent>
                 <TasksNewTask :categories="categories" @cancelNewTaskDialog="cancelNewTaskDialog" @saveNewTodo="saveNewTodo"/>
@@ -228,14 +238,24 @@
         const name = user.first_name + ' ' + user.last_name
         return name.match(/(\b\S)?/g).join("").match(/(^\S|\S$)?/g).join("").toUpperCase()
     }
-    const getStatusColor = (status) => {
+    const getStatusBgColor = (status) => {
         switch (status) {
             case 'pending':
-                return 'blue-3'
+                return '#1c2f4c'
             case 'completed':
-                return 'green-3'
+                return '#1e3833'
             default:
                 return 'grey-2'
+        }
+    }
+    const getStatusTextColor = (status) => {
+        switch (status) {
+            case 'pending':
+                return 'primary'
+            case 'completed':
+                return 'green'
+            default:
+                return 'black'
         }
     }
     const formatDate = (date) => {
@@ -271,10 +291,11 @@
 
 <style scoped>
 .todo-item {
-    background-color: white;
+    background-color: #152031;
+    color: white;
 }
 .todo-rounded {
-    border-radius: 15px;
+    border-radius: 10px;
 }
 .no-data p {
     color: white;
@@ -291,7 +312,7 @@
     padding: 14px 10px !important;
 }
 .overlapping {
-    box-shadow: 0 0 0 2px #f5f5f5;
+    box-shadow: 0 0 0 1px #0e1827;
     display: inline-block;
 }
 .overlapping:not(:first-child) {

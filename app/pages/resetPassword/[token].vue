@@ -5,7 +5,7 @@
                 <!-- Loading state -->
                 <q-card v-if="validating" bordered class="my-card flat card-rounded q-pa-md">
                     <q-card-section class="text-center">
-                        <q-spinner color="amber-7" size="3em" />
+                        <q-spinner color="amber-6" size="3em" />
                         <p class="q-mt-md">Validating reset link...</p>
                     </q-card-section>
                 </q-card>
@@ -17,7 +17,7 @@
                         <p class="text-h6 q-mt-md">Invalid or Expired Link</p>
                         <p>This password reset link is invalid or has expired.</p>
                         <p class="text-caption">Reset links are valid for 1 hour.</p>
-                        <q-btn color="amber-7" text-color="grey-10" to="/forgotPassword" class="q-mt-md">
+                        <q-btn color="amber-6" text-color="grey-10" to="/forgotPassword" class="q-mt-md">
                             Request New Link
                         </q-btn>
                         <q-btn flat color="grey-7" to="/login" class="q-mt-md q-ml-sm">
@@ -36,18 +36,18 @@
 
                         <q-card-section>
                             <div class="q-my-md">
-                                <q-input type="password" filled v-model="user.new_password" placeholder="New Password" color="amber-7" lazy-rules :rules="[rules.required, rules.min]">
+                                <q-input type="password" filled v-model="user.new_password" placeholder="New Password" color="amber-6" lazy-rules :rules="[rules.required, rules.min]">
                                     <template v-slot:prepend>
                                         <q-icon name="fa-regular fa-envelope" class="q-mr-sm"/>
                                     </template>
                                 </q-input>
-                                <q-input type="password" filled v-model="user.confirm_password" placeholder="Confirm Password" color="amber-7" lazy-rules :rules="[rules.required, rules.min, rules.matchPwd]">
+                                <q-input type="password" filled v-model="user.confirm_password" placeholder="Confirm Password" color="amber-6" lazy-rules :rules="[rules.required, rules.min, rules.matchPwd]">
                                     <template v-slot:prepend>
                                         <q-icon name="fa-regular fa-envelope" class="q-mr-sm"/>
                                     </template>
                                 </q-input>
                             </div>
-                            <q-btn type="submit" :loading="submitting" :disable="submitting" color="amber-7" text-color="grey-10" unelevated class="q-mt-sm login-btn q-py-sm">
+                            <q-btn type="submit" :loading="submitting" :disable="submitting" color="amber-6" text-color="grey-10" unelevated class="q-mt-sm login-btn q-py-sm">
                                 <div>Reset Password</div>
                             </q-btn>
                         </q-card-section>

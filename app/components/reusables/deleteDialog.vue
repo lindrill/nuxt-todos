@@ -2,14 +2,14 @@
     <div>
         <q-card>
             <q-card-section class="row items-center">
-            <q-avatar icon="fa-regular fa-trash-can" color="amber-7" text-color="red" />
+            <q-avatar icon="fa-regular fa-trash-can" color="amber-6" text-color="red" />
             <!-- <i class=""></i> -->
             <span class="q-ml-sm">Delete this {{ getTableName }}?</span>
             </q-card-section>
 
             <q-card-actions align="right" class="q-pa-lg">
                 <q-btn flat label="Cancel" text-color="black" @click="cancelDeleteDialog"/>
-                <q-btn label="Delete" color="amber-7" text-color="black" @click="deleteItem"/>
+                <q-btn label="Delete" color="amber-6" text-color="black" @click="deleteItem"/>
             </q-card-actions>
       </q-card>
     </div>

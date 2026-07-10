@@ -4,8 +4,8 @@
             <div class="col-3 q-pa-md q-gutter-md q-ma-sm">
                 <q-card bordered class="my-card flat card-rounded q-pa-md">
                     <q-card-section>
-                        <div class="text-h6">Login to Tinker 
-                            <q-icon name="fa-solid fa-cloud-bolt" class="q-ml-sm" color="amber-7" size="32px"/>
+                        <div class="text-h6">Login to TinkerFlow
+                            <q-icon name="mdi-thought-bubble-outline" class="q-ml-sm" color="amber-6" size="32px"/>
                         </div>
                     </q-card-section>
 
@@ -13,14 +13,14 @@
 
                     <q-card-section>
                         <div class="q-my-md">
-                            <q-input type="email" color="amber-7" filled dense v-model="user.email" placeholder="Email">
+                            <q-input type="email" color="amber-6" filled dense v-model="user.email" placeholder="Email">
                                 <template v-slot:prepend>
                                     <q-icon name="fa-regular fa-envelope" class="q-mr-sm"/>
                                 </template>
                             </q-input>
                         </div>
                         <div class="q-my-md">
-                            <q-input type="password" color="amber-7" filled dense v-model="user.password" placeholder="Password">
+                            <q-input type="password" color="amber-6" filled dense v-model="user.password" placeholder="Password">
                                 <template v-slot:prepend>
                                     <q-icon name="fa-solid fa-lock" class="q-mr-sm"/>
                                 </template>
@@ -29,7 +29,7 @@
                         <div class="q-my-md forgot-password cursor-pointer q-hoverable">
                             <p @click="forgotPassword" >Forgot Password?</p>
                         </div>
-                        <q-btn @click="login" :loading="submitting" :disable="submitting" color="amber-7" text-color="grey-10" unelevated class="q-mt-sm login-btn q-py-sm">
+                        <q-btn @click="login" :loading="submitting" :disable="submitting" color="amber-6" text-color="grey-10" unelevated class="q-mt-sm login-btn q-py-sm">
                             <div>Login</div>
                         </q-btn>
                         <div class="q-mt-lg sign-up">

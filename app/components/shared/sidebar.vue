@@ -1,46 +1,55 @@
 <template>
-    <q-card class="my-card sidebar-card card-rounded bg-layer">
-        <q-card-section>
-            <span class="text-subtitle1 sidebar-title q-mt-md">Calendar</span>
-            <q-date
-                v-model="date"
-                :model-value="date"
-                minimal
-                flat
-                :navigation-min-year-month="minDate"
-                :navigation-max-year-month="maxDate"
-                color="amber"
-                text-color="white"
-                class="custom-calendar"
-            />
-
-            <q-card class="my-card card-rounded">
-                <q-card-section>
-                    <div class="q-pa-md">
-                        <q-list>
-                            <q-item
+    <div class="col-3 q-pa-md items-start q-mt-sm">
+        <q-card class="my-card sidebar-card card-rounded">
+            <q-card-section>
+                <span class="text-subtitle1 sidebar-title q-mt-md">Calendar</span>
+                <q-date
+                    v-model="date"
+                    :model-value="date"
+                    minimal
+                    flat
+                    :navigation-min-year-month="minDate"
+                    :navigation-max-year-month="maxDate"
+                    color="amber"
+                    text-color="white"
+                    class="custom-calendar"
+                />
+            </q-card-section>
+        </q-card>
+        <q-card class="my-card upcoming-task-card card-rounded q-mt-md">
+            <q-card-section>
+                <div class="q-pa-md">
+                    <q-list>
+                        <q-item-section>
+                            <q-item-label class="text-white text-weight-bold">Upcoming Tasks</q-item-label>
+                        </q-item-section>
+                        
+                        <q-item-section side>
+                            <q-item-label caption>View All</q-item-label>
+                        </q-item-section>
+                        
+                        <q-item
                             v-for="activity in activities"
                             :key="'id_here'"
                             class="q-my-md"
                             flat
                             clickable
                             v-ripple
-                            >
+                        >
                             <q-item-section avatar>
                                 <q-icon color="blue" size="22px" :name="'fa-solid fa-' + activity.icon" />
                             </q-item-section>
 
-                            <q-item-section>
+                            <q-item-section class="text-white">
                                 <q-item-label>{{ activity.name }}</q-item-label>
-                                <q-item-label caption lines="1">{{ activity.category }}</q-item-label>
+                                <q-item-label caption lines="1" class="text-white">{{ activity.category }}</q-item-label>
                             </q-item-section>
-                            </q-item>
-                        </q-list>
-                    </div>
-                </q-card-section>
-            </q-card>
-        </q-card-section>
-    </q-card>
+                        </q-item>
+                    </q-list>
+                </div>
+            </q-card-section>
+        </q-card>
+    </div>
 </template>
 
 <script setup>
@@ -85,8 +94,20 @@
 </script>
 
 <style scoped>
+
+.sidebar-title {
+    color: white;
+}
+
+.sidebar-card, .upcoming-task-card {
+    background-color: #152031;
+    border: 1px solid #1d2837;
+    /* min-height: 100dvh; */
+}
+
 .custom-calendar {
-    background-color: #2e384e;
+    /* background-color: #2e384e; */
+    background-color: #152031;
     color: white !important;
     width: 100%;
     margin-top: 10px;
@@ -104,13 +125,6 @@
     color: black !important;
 }
 
-.sidebar-title {
-    color: white;
-}
-
-.sidebar-card {
-    min-height: 100dvh;
-}
 /* .custom-calendar :deep(.q-date__header) {
     color: white !important;
 } */

@@ -13,13 +13,13 @@
                         <q-card-section v-if="!emailSent">
                             <div class="q-my-md">
                                 <p>Please enter your email to receive a password reset link.</p>
-                                <q-input type="email" color="amber-7" filled dense v-model="email" placeholder="Email">
+                                <q-input type="email" color="amber-6" filled dense v-model="email" placeholder="Email">
                                     <template v-slot:prepend>
                                         <q-icon name="fa-regular fa-envelope" class="q-mr-sm"/>
                                     </template>
                                 </q-input>
                             </div>
-                            <q-btn type="submit" :loading="submitting" :disable="submitting" color="amber-7" text-color="grey-10" unelevated class="q-mt-sm login-btn q-py-sm">
+                            <q-btn type="submit" :loading="submitting" :disable="submitting" color="amber-6" text-color="grey-10" unelevated class="q-mt-sm login-btn q-py-sm">
                                 <div>Send</div>
                             </q-btn>
                         </q-card-section>
@@ -29,7 +29,7 @@
                                 <p class="text-h6 q-mt-md">Check your email!</p>
                                 <p>We've sent a password reset link to <strong>{{ email }}</strong></p>
                                 <p class="text-caption">Didn't receive it? Check your spam folder.</p>
-                                <q-btn flat color="amber-7" @click="emailSent = false">Send again</q-btn>
+                                <q-btn flat color="amber-6" @click="emailSent = false">Send again</q-btn>
                                 <q-btn flat color="grey-7" to="/login">Back to login</q-btn>
                             </div>
                         </q-card-section>

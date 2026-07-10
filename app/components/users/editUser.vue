@@ -6,15 +6,15 @@
                     <div class="text-h6 q-my-lg q-pb-sm">Edit User</div>
                     <div class="q-my-sm">
                         <label for="first_name">First Name</label>
-                        <q-input filled v-model="clonedUser.first_name" color="amber-7" lazy-rules :rules="[rules.required]"/>
+                        <q-input filled v-model="clonedUser.first_name" color="amber-6" lazy-rules :rules="[rules.required]"/>
                     </div>
                     <div class="q-my-sm">
                         <label for="last_name">Last Name</label>
-                        <q-input filled autogrow v-model="clonedUser.last_name" lazy-rules :rules="[rules.required]" color="amber-7"/>
+                        <q-input filled autogrow v-model="clonedUser.last_name" lazy-rules :rules="[rules.required]" color="amber-6"/>
                     </div>
                     <div class="q-my-sm">
                         <label for="email">Email</label>
-                        <q-input type="email" filled v-model="clonedUser.email" lazy-rules :rules="[rules.required, rules.email]" color="amber-7"/>
+                        <q-input type="email" filled v-model="clonedUser.email" lazy-rules :rules="[rules.required, rules.email]" color="amber-6"/>
                     </div>
                     <div class="q-my-sm">
                         <label for="email">Role</label>
@@ -22,8 +22,8 @@
                     </div>
                 </q-card-section>
                 <q-card-actions align="right" class="q-pa-lg">
-                    <q-btn flat label="Cancel" color="amber-7" text-color="black" @click="cancelEditUserDialog"/>
-                    <q-btn type="submit" label="Save" color="amber-7" text-color="black"/>
+                    <q-btn flat label="Cancel" color="amber-6" text-color="black" @click="cancelEditUserDialog"/>
+                    <q-btn type="submit" label="Save" color="amber-6" text-color="black"/>
                 </q-card-actions>
             </q-form>
         </q-card>

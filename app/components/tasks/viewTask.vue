@@ -51,7 +51,7 @@
             </q-card-section>
 
             <q-card-actions align="right" class="q-pa-lg">
-                <q-btn flat label="Close" color="amber-7" text-color="black" @click="cancelViewTaskDialog"/>
+                <q-btn flat label="Close" color="amber-6" text-color="black" @click="cancelViewTaskDialog"/>
             </q-card-actions>
         </q-card>
     </div>
