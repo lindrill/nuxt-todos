@@ -38,13 +38,6 @@
                         <q-item-section class="text-white">Users</q-item-section>
                     </q-item>
 
-                    <q-item clickable v-ripple to="/settings" active-class="menu-item-active">
-                        <q-item-section avatar>
-                            <q-icon color="blue-grey-1" size="22px" name="mdi-cog-outline" />
-                        </q-item-section>
-                        <q-item-section class="text-white">Settings</q-item-section>
-                    </q-item>
-
                     <q-separator color="blue-grey-10" class="q-my-sm"/>
 
                     <q-item>

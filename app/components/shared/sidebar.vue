@@ -2,7 +2,7 @@
     <div class="col-3 q-pa-md items-start q-mt-sm">
         <q-card class="my-card sidebar-card card-rounded">
             <q-card-section>
-                <span class="text-subtitle1 sidebar-title q-mt-md">Calendar</span>
+                <span class="text-white text-weight-bold q-mt-md">Calendar</span>
                 <q-date
                     v-model="date"
                     :model-value="date"
@@ -18,15 +18,11 @@
         </q-card>
         <q-card class="my-card upcoming-task-card card-rounded q-mt-md">
             <q-card-section>
-                <div class="q-pa-md">
+                <div class="q-pa-sm">
                     <q-list>
-                        <q-item-section>
-                            <q-item-label class="text-white text-weight-bold">Upcoming Tasks</q-item-label>
-                        </q-item-section>
-                        
-                        <q-item-section side>
-                            <q-item-label caption>View All</q-item-label>
-                        </q-item-section>
+                        <q-item>
+                            <q-item-section class="text-white text-weight-bold">Upcoming Tasks</q-item-section>
+                        </q-item>
                         
                         <q-item
                             v-for="activity in activities"
@@ -43,6 +39,11 @@
                             <q-item-section class="text-white">
                                 <q-item-label>{{ activity.name }}</q-item-label>
                                 <q-item-label caption lines="1" class="text-white">{{ activity.category }}</q-item-label>
+                            </q-item-section>
+
+                            <q-item-section side>
+                                <q-item-label caption class="text-grey-4" clickable>Jul 21</q-item-label>
+                                <q-item-label caption class="text-grey-4" clickable>Sat</q-item-label>
                             </q-item-section>
                         </q-item>
                     </q-list>

@@ -1,9 +1,7 @@
 <template>
     <div>
         <div class="row">
-            <div class="col-3 q-pa-md items-start q-gutter-md q-mt-sm">
-                <SharedMenu />
-            </div>
+            <SharedMenu />
             <div class="col-6">
                 <div class="page-header row justify-between q-mt-md q-px-md">
                     <h6 class="page-title">Users</h6>
@@ -47,9 +45,7 @@
                     </q-card>
                 </div>
             </div>
-            <div class="col-3 q-pa-md items-start q-gutter-md q-mt-sm">
-                <SharedSidebar />
-            </div>
+            <SharedSidebar />
         </div>
         <div>
             <q-dialog v-model="openNewUserDialog" backdrop-filter="blur(4px)" persistent>
