@@ -94,20 +94,27 @@
                             <div class="categories-header row justify-between items-center q-mb-lg">
                                 <span class="text-subtitle1 text-white">Categories</span>
                                 <q-btn color="amber-6" text-color="grey-10" rounded class="q-mt-md" @click="openNewCategoryDialog = true">
-                                    <q-icon left size="1em" name="fa-solid fa-plus" />
-                                    <div>New Category</div>
+                                    <q-icon left size="1em" name="fa-solid fa-plus"/>
+                                    <span>New Category</span>
                                 </q-btn>
                             </div>
                             <div class="row q-col-gutter-lg">
                                 <div v-for="category in categories1" :key="category.id" class="col-3">
-                                    <q-card class="category-card card-rounded text-center cursor-pointer" flat>
+                                    <q-card class="category-card card-rounded text-center cursor-pointer">
                                         <q-card-section class="q-py-lg">
                                             <q-icon :name="category.icon" size="1.5rem" color="white" class="q-mb-sm"/>
-                                            <div class="text-white text-caption">{{ category.name }}</div>
+                                            <div class="text-caption text-weight-medium text-amber-6">{{ category.name }}</div>
+                                            <div class="text-white text-caption">12 tasks</div>
                                         </q-card-section>
                                     </q-card>
                                 </div>
                             </div>
+                        </div>
+                        <div class="flex flex-center q-mt-md">
+                            <q-btn color="amber-6" text-color="grey-10" rounded flat>
+                                <span class="text-amber-6 view-cat-btn">View all categories</span>
+                                <q-icon right size="1em" name="fa-solid fa-angle-right" color="amber-6"/>
+                            </q-btn>
                         </div>
                     </q-card-section>
                 </q-card>
@@ -189,13 +196,19 @@
 
 <style scoped>
 .category-card {
-    background-color: #222c41;
+    /* background-color: #152031; */
+    background-color: #0e1827 !important;
+    border: 1px solid #1d2837;
+    /* background-color: #222c41; */
     /* border-radius: 16px; */
-    transition: all 0.3s ease;
+    /* transition: all 0.3s ease; */
 }
 .dashboard-stat {
     background-color: #152031;
     border: 1px solid #1d2837;
+}
+.view-cat-btn {
+    text-transform: none !important;
 }
  
 /* .category-card:hover {

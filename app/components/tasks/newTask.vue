@@ -1,103 +1,96 @@
 <template>
-    <div>
-        <q-card style="width: 500px">
-            <q-form @submit="saveNewTodo">
-                <q-card-section class="q-mx-md">
-                    <div class="text-h6 q-my-lg q-pb-sm">New Task</div>
-                    <div class="q-my-sm">
-                        <label for="title">Task Name</label>
-                        <q-input filled v-model="newTodo.title" color="amber-6" lazy-rules :rules="[rules.required]"/>
-                    </div>
-                    <div class="q-mb-lg">
-                        <label for="title">Category</label>
-                        <q-select 
-                            filled 
-                            v-model="newTodo.category" 
-                            color="amber-6" 
-                            :options="catOptions" 
-                            option-value="_id" 
-                            option-label="title" 
-                            use-input
-                            use-chips
-                            stack-label
-                            @filter="filterCategory"
-                            clearable
-                            >
-                            <template v-slot:selected>
-                                <q-chip
-                                v-if="newTodo.category"
-                                dense
-                                square
-                                color="white"
-                                text-color="amber-6"
-                                class="q-my-none q-ml-xs q-mr-none"
-                                >
-                                <q-avatar color="amber-6" text-color="white" :icon="'fa-solid fa-'+newTodo.category.icon" />
-                                {{ newTodo.category.title }}
-                                </q-chip>
-                                <!-- <q-badge v-else>*none*</q-badge> -->
-                            </template>
-                            <template v-slot:option="scope">
-                                <q-item v-bind="scope.itemProps">
-                                    <q-item-section avatar>
-                                        <q-icon :name="'fa-solid fa-'+scope.opt.icon" size="24px" />
-                                    </q-item-section>
-                                    <q-item-section>
-                                        <q-item-label>{{ scope.opt.title }}</q-item-label>
-                                    </q-item-section>
-                                </q-item>
-                            </template>
-                        </q-select>
-                    </div>
-                    <div class="q-my-sm">
-                        <label for="description">Description</label>
-                        <q-input filled autogrow v-model="newTodo.description" color="amber-6"/>
-                    </div>
-                    <div class="q-my-sm">
-                        <label for="date">Date</label>
-                        <q-input filled v-model="newTodo.dueDate" mask="date" lazy-rules :rules="['date', rules.required]">
-                            <template v-slot:append>
-                                <q-icon name="event" class="cursor-pointer">
-                                <q-popup-proxy cover transition-show="scale" transition-hide="scale">
-                                    <q-date v-model="newTodo.dueDate">
-                                    <div class="row items-center justify-end">
-                                        <q-btn v-close-popup label="Close" color="primary" flat />
-                                    </div>
-                                    </q-date>
-                                </q-popup-proxy>
-                                </q-icon>
-                            </template>
-                        </q-input>
-                        
-                    </div>
-                    <div class="q-my-sm">
-                        <label for="time">Time</label>
-                        <q-input filled v-model="newTodo.time" mask="time" lazy-rules :rules="['time', rules.required]">
-                            <template v-slot:append>
-                            <q-icon name="access_time" class="cursor-pointer">
-                                <q-popup-proxy
-                                cover
-                                transition-show="scale"
-                                transition-hide="scale"
-                                >
-                                <q-time v-model="newTodo.time">
-                                    <div class="row items-center justify-end">
+    <q-card style="width: 500px" class="task-form">
+        <q-form @submit="saveNewTodo">
+            <q-card-section class="row items-center q-pb-none q-mx-md q-my-md">
+                <div class="text-h6">New Task</div>
+                <q-space />
+                <q-btn icon="close" flat round dense @click="cancelNewTaskDialog" />
+            </q-card-section>
+            <q-card-section class="q-mx-md">
+                <div class="q-my-sm">
+                    <label for="title">Task Name</label>
+                    <q-input outlined v-model="newTodo.title" placeholder="e.g. Buy groceries" color="amber-6" lazy-rules :rules="[rules.required]" class="q-mt-sm"/>
+                </div>
+                <div class="q-mb-lg">
+                    <label for="title">Category</label>
+                    <q-select 
+                        outlined 
+                        v-model="newTodo.category" 
+                        color="amber-6" 
+                        :options="catOptions" 
+                        option-value="_id" 
+                        option-label="title" 
+                        use-input
+                        use-chips
+                        stack-label
+                        @filter="filterCategory"
+                        clearable
+                        class="q-mt-sm"
+                        >
+                        <template v-slot:selected>
+                            <q-icon :name="'fa-solid fa-'+newTodo.category.icon" color="amber-6" size="24px" class="q-ml-sm" />
+                            {{ newTodo.category.title }}
+                        </template>
+                        <template v-slot:option="scope">
+                            <q-item v-bind="scope.itemProps">
+                                <q-item-section avatar>
+                                    <q-icon :name="'fa-solid fa-'+scope.opt.icon" size="24px" />
+                                </q-item-section>
+                                <q-item-section>
+                                    <q-item-label>{{ scope.opt.title }}</q-item-label>
+                                </q-item-section>
+                            </q-item>
+                        </template>
+                    </q-select>
+                </div>
+                <div class="q-my-sm">
+                    <label for="description">Description</label>
+                    <q-input outlined autogrow v-model="newTodo.description" color="amber-6" class="q-mt-sm"/>
+                </div>
+                <div class="q-my-sm q-mt-lg">
+                    <label for="date">Date</label>
+                    <q-input outlined v-model="newTodo.dueDate" color="amber-6" mask="date" lazy-rules :rules="['date', rules.required]" class="q-mt-sm">
+                        <template v-slot:append>
+                            <q-icon name="event" color="white" class="cursor-pointer">
+                            <q-popup-proxy cover transition-show="scale" transition-hide="scale">
+                                <q-date v-model="newTodo.dueDate">
+                                <div class="row items-center justify-end">
                                     <q-btn v-close-popup label="Close" color="primary" flat />
-                                    </div>
-                                </q-time>
-                                </q-popup-proxy>
+                                </div>
+                                </q-date>
+                            </q-popup-proxy>
                             </q-icon>
-                            </template>
-                        </q-input>
-                    </div>
-                </q-card-section>
-                <q-card-actions align="right" class="q-pa-lg">
-                    <q-btn flat label="Cancel" color="amber-6" text-color="black" @click="cancelNewTaskDialog"/>
-                    <q-btn type="submit" label="Save" color="amber-6" text-color="black"/>
-                </q-card-actions>
-            </q-form>
-        </q-card>
-    </div>
+                        </template>
+                    </q-input>
+                    
+                </div>
+                <div class="q-my-sm">
+                    <label for="time">Time</label>
+                    <q-input outlined v-model="newTodo.time" color="amber-6" mask="time" lazy-rules :rules="['time', rules.required]" class="q-mt-sm">
+                        <template v-slot:append>
+                        <q-icon name="access_time" color="white" class="cursor-pointer">
+                            <q-popup-proxy
+                            cover
+                            transition-show="scale"
+                            transition-hide="scale"
+                            >
+                            <q-time v-model="newTodo.time">
+                                <div class="row items-center justify-end">
+                                <q-btn v-close-popup label="Close" color="primary" flat />
+                                </div>
+                            </q-time>
+                            </q-popup-proxy>
+                        </q-icon>
+                        </template>
+                    </q-input>
+                </div>
+            </q-card-section>
+            <q-card-actions align="right" class="q-pa-lg">
+                <q-btn flat label="Cancel" color="amber-6" text-color="white" @click="cancelNewTaskDialog"/>
+                <q-btn type="submit" label="Save Task" color="amber-6" text-color="black"/>
+            </q-card-actions>
+        </q-form>
+    </q-card>
 </template>
 
 <script setup>

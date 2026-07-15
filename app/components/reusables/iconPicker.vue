@@ -7,10 +7,9 @@
                 size="32px"
                 class="selected-icon"
             />
-            <span v-else class="placeholder">Click to select icon</span>
+            <span v-else class="placeholder text-white">Click to select icon</span>
             <q-icon name="fa-solid fa-chevron-down" size="24px" />
         </div>
-
         <q-dialog v-model="showPicker" position="standard">
             <q-card style="width: 600px; max-width: 90vw">
                 <q-card-section class="q-pb-none">
@@ -18,7 +17,7 @@
                     <q-input
                         v-model="searchQuery"
                         debounce="500"
-                        filled
+                        outlined
                         placeholder="Search icons..."
                         color="amber-6"
                         class="q-mt-md"
@@ -163,9 +162,9 @@ const clearSelection = () => {
     align-items: center;
     justify-content: space-between;
     padding: 12px 16px;
-    border: 1px solid rgba(0, 0, 0, 0.24);
-    border-radius: 4px;
-    background-color: rgba(0, 0, 0, 0.05);
+    border-radius: 10px !important;
+    background-color: #1d2534 !important;
+    border: 1px solid #28303f;
     cursor: pointer;
     transition: background-color 0.2s;
     min-height: 56px;

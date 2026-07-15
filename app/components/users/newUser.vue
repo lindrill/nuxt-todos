@@ -1,37 +1,39 @@
 <template>
-    <div>
-        <q-card style="width: 500px">
-            <q-form @submit="saveNewUser">
-                <q-card-section class="q-mx-md">
-                    <div class="text-h6 q-my-lg q-pb-sm">New User</div>
-                    <div class="q-my-sm">
-                        <label for="first_name">First Name</label>
-                        <q-input filled v-model="newUser.first_name" color="amber-6" lazy-rules :rules="[rules.required]"/>
-                    </div>
-                    <div class="q-my-sm">
-                        <label for="last_name">Last Name</label>
-                        <q-input filled autogrow v-model="newUser.last_name" lazy-rules :rules="[rules.required]" color="amber-6"/>
-                    </div>
-                    <div class="q-my-sm">
-                        <label for="email">Email</label>
-                        <q-input type="email" filled v-model="newUser.email" lazy-rules :rules="[rules.required, rules.email]" color="amber-6"/>
-                    </div>
-                    <div class="q-my-sm">
-                        <label for="password">Password</label>
-                        <q-input type="password" filled v-model="newUser.password" lazy-rules :rules="[rules.required, rules.min]" color="amber-6"/>
-                    </div>
-                    <div class="q-my-sm">
-                        <label for="email">Role</label>
-                        <q-select filled v-model="newUser.role" lazy-rules :rules="[rules.required]" :options="options"/>
-                    </div>
-                </q-card-section>
-                <q-card-actions align="right" class="q-pa-lg">
-                    <q-btn flat label="Cancel" color="amber-6" text-color="black" @click="cancelNewUserDialog"/>
-                    <q-btn type="submit" label="Save" color="amber-6" text-color="black"/>
-                </q-card-actions>
-            </q-form>
-        </q-card>
-    </div>
+    <q-card style="width: 500px" class="user-form">
+        <q-form @submit="saveNewUser">
+            <q-card-section class="row items-center q-pb-none q-mx-md q-my-md">
+                <div class="text-h6">New User</div>
+                <q-space />
+                <q-btn icon="close" flat round dense @click="cancelNewUserDialog" />
+            </q-card-section>
+            <q-card-section class="q-mx-md">
+                <div class="q-my-sm">
+                    <label for="first_name">First Name</label>
+                    <q-input outlined v-model="newUser.first_name" color="amber-6" lazy-rules :rules="[rules.required]" class="q-mt-sm"/>
+                </div>
+                <div class="q-my-sm">
+                    <label for="last_name">Last Name</label>
+                    <q-input outlined autogrow v-model="newUser.last_name" lazy-rules :rules="[rules.required]" color="amber-6" class="q-mt-sm"/>
+                </div>
+                <div class="q-my-sm">
+                    <label for="email">Email</label>
+                    <q-input type="email" outlined v-model="newUser.email" lazy-rules :rules="[rules.required, rules.email]" color="amber-6" class="q-mt-sm"/>
+                </div>
+                <div class="q-my-sm">
+                    <label for="password">Password</label>
+                    <q-input type="password" outlined v-model="newUser.password" lazy-rules :rules="[rules.required, rules.min]" color="amber-6" class="q-mt-sm"/>
+                </div>
+                <div class="q-my-sm">
+                    <label for="email">Role</label>
+                    <q-select outlined v-model="newUser.role" lazy-rules :rules="[rules.required]" :options="options" class="q-mt-sm"/>
+                </div>
+            </q-card-section>
+            <q-card-actions align="right" class="q-pa-lg">
+                <q-btn flat label="Cancel" color="amber-6" text-color="white" @click="cancelNewUserDialog"/>
+                <q-btn type="submit" label="Save User" color="amber-6" text-color="black"/>
+            </q-card-actions>
+        </q-form>
+    </q-card>
 </template>
 
 <script setup>

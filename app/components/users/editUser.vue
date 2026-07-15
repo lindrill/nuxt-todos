@@ -1,33 +1,35 @@
 <template>
-    <div>
-        <q-card style="width: 500px">
-            <q-form @submit="updateUser">
-                <q-card-section class="q-mx-md">
-                    <div class="text-h6 q-my-lg q-pb-sm">Edit User</div>
-                    <div class="q-my-sm">
-                        <label for="first_name">First Name</label>
-                        <q-input filled v-model="clonedUser.first_name" color="amber-6" lazy-rules :rules="[rules.required]"/>
-                    </div>
-                    <div class="q-my-sm">
-                        <label for="last_name">Last Name</label>
-                        <q-input filled autogrow v-model="clonedUser.last_name" lazy-rules :rules="[rules.required]" color="amber-6"/>
-                    </div>
-                    <div class="q-my-sm">
-                        <label for="email">Email</label>
-                        <q-input type="email" filled v-model="clonedUser.email" lazy-rules :rules="[rules.required, rules.email]" color="amber-6"/>
-                    </div>
-                    <div class="q-my-sm">
-                        <label for="email">Role</label>
-                        <q-select filled v-model="clonedUser.role" lazy-rules :rules="[rules.required]" :options="options"/>
-                    </div>
-                </q-card-section>
-                <q-card-actions align="right" class="q-pa-lg">
-                    <q-btn flat label="Cancel" color="amber-6" text-color="black" @click="cancelEditUserDialog"/>
-                    <q-btn type="submit" label="Save" color="amber-6" text-color="black"/>
-                </q-card-actions>
-            </q-form>
-        </q-card>
-    </div>
+    <q-card style="width: 500px" class="user-form">
+        <q-form @submit="updateUser">
+             <q-card-section class="row items-center q-pb-none q-mx-md q-my-md">
+                <div class="text-h6">Edit User</div>
+                <q-space />
+                <q-btn icon="close" flat round dense @click="cancelEditUserDialog" />
+            </q-card-section>
+            <q-card-section class="q-mx-md">
+                <div class="q-my-sm">
+                    <label for="first_name">First Name</label>
+                    <q-input outlined v-model="clonedUser.first_name" color="amber-6" lazy-rules :rules="[rules.required]" class="q-mt-sm"/>
+                </div>
+                <div class="q-my-sm">
+                    <label for="last_name">Last Name</label>
+                    <q-input outlined autogrow v-model="clonedUser.last_name" lazy-rules :rules="[rules.required]" color="amber-6" class="q-mt-sm"/>
+                </div>
+                <div class="q-my-sm">
+                    <label for="email">Email</label>
+                    <q-input type="email" outlined v-model="clonedUser.email" lazy-rules :rules="[rules.required, rules.email]" color="amber-6" class="q-mt-sm"/>
+                </div>
+                <div class="q-my-sm">
+                    <label for="email">Role</label>
+                    <q-select outlined v-model="clonedUser.role" lazy-rules :rules="[rules.required]" :options="options" class="q-mt-sm"/>
+                </div>
+            </q-card-section>
+            <q-card-actions align="right" class="q-pa-lg">
+                <q-btn flat label="Cancel" color="amber-6" text-color="white" @click="cancelEditUserDialog"/>
+                <q-btn type="submit" label="Save User" color="amber-6" text-color="black"/>
+            </q-card-actions>
+        </q-form>
+    </q-card>
 </template>
 
 <script setup>

@@ -5,6 +5,56 @@ body {
     /* background-color: #222c41 !important; */
     background-color: #0e1827 !important;
 }
+.task-form, .category-form, .user-form {
+    background-color: #161e2b;
+    border: 1px solid #28303f;
+    border-radius: 10px !important;
+    color: white;
+}
+.task-form .q-field__control,
+.category-form .q-field__control,
+.user-form .q-field__control {
+    border-radius: 10px !important;
+    background-color: #1d2534 !important;
+}
+.task-form .q-field--outlined .q-field__control:before,
+.category-form .q-field--outlined .q-field__control:before,
+.user-form .q-field--outlined .q-field__control:before {
+    border-color: #28303f !important;
+}
+ 
+.task-form .q-field--outlined .q-field__control:hover:before,
+.category-form .q-field--outlined .q-field__control:hover:before,
+.user-form .q-field--outlined .q-field__control:hover:before {
+    border-color: #28303f !important;
+}
+ 
+.task-form .q-field--outlined.q-field--focused .q-field__control:before,
+.category-form .q-field--outlined.q-field--focused .q-field__control:before,
+.user-form .q-field--outlined.q-field--focused .q-field__control:before {
+    border-color: #ffc107 !important;
+}
+.task-form .q-field__native,
+.task-form .q-field__input,
+.category-form .q-field__native,
+.category-form .q-field__input,
+.user-form .q-field__native,
+.user-form .q-field__input {
+    color: white !important;
+}
+.task-form .q-btn,
+.category-form .q-btn,
+.user-form .q-btn {
+    text-transform: none !important;
+}
+.task-form .q-select .q-field__append .q-icon,
+.category-form .q-select .q-field__append .q-icon,
+.user-form .q-select .q-field__append .q-icon {
+    color: white !important;
+}
+/* .task-form q-input {
+    border-radius: 15px !important;
+} */
 .page-title,
 .text-white {
     color: white;
