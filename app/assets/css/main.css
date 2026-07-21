@@ -5,7 +5,7 @@ body {
     /* background-color: #222c41 !important; */
     background-color: #0e1827 !important;
 }
-.task-form, .category-form, .user-form {
+.task-form, .category-form, .user-form, .task-details, .delete-form {
     background-color: #161e2b;
     border: 1px solid #28303f;
     border-radius: 10px !important;
@@ -42,11 +42,11 @@ body {
 .user-form .q-field__input {
     color: white !important;
 }
-.task-form .q-btn,
+/* .task-form .q-btn,
 .category-form .q-btn,
 .user-form .q-btn {
     text-transform: none !important;
-}
+} */
 .task-form .q-select .q-field__append .q-icon,
 .category-form .q-select .q-field__append .q-icon,
 .user-form .q-select .q-field__append .q-icon {
@@ -55,6 +55,15 @@ body {
 /* .task-form q-input {
     border-radius: 15px !important;
 } */
+.form-icon-wrapper {
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 193, 7, 0.1);
+}
 .page-title,
 .text-white {
     color: white;

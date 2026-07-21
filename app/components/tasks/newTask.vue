@@ -1,5 +1,5 @@
 <template>
-    <q-card style="width: 500px" class="task-form">
+    <q-card style="width: 500px; padding: 10px 20px 20px 20px;" class="task-form">
         <q-form @submit="saveNewTodo">
             <q-card-section class="row items-center q-pb-none q-mx-md q-my-md">
                 <div class="text-h6">New Task</div>
@@ -85,9 +85,9 @@
                     </q-input>
                 </div>
             </q-card-section>
-            <q-card-actions align="right" class="q-pa-lg">
+            <q-card-actions align="right" class="q-pb-lg q-mr-lg">
                 <q-btn flat label="Cancel" color="amber-6" text-color="white" @click="cancelNewTaskDialog"/>
-                <q-btn type="submit" label="Save Task" color="amber-6" text-color="black"/>
+                <q-btn type="submit" unelevated icon="save" label="Save Task" color="purple" text-color="white"/>
             </q-card-actions>
         </q-form>
     </q-card>

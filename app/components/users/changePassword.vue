@@ -1,30 +1,37 @@
 <template>
-    <div>
-        <q-card style="width: 500px">
-            <q-form @submit="updatePassword">
-                <q-card-section class="q-mx-md">
-                    <div class="text-h6 q-my-lg q-pb-sm">Change Password for {{ props.user.first_name }} {{ props.user.last_name }}</div>
-                    <div class="q-my-sm" v-if="props.page === 'profile'">
-                        <label for="first_name">Current Password</label>
-                        <q-input type="password" filled v-model="clonedUser.current_password" color="amber-6" lazy-rules debounce="500" :rules="[rules.required, rules.verifyCurrentPwd]"/>
+    <q-card style="width: 500px; padding: 20px;" class="user-form">
+        <q-form @submit="updatePassword">
+            <q-card-section class="q-mx-md">
+                <div class="row items-center q-mb-xl">
+                    <div class="form-icon-wrapper q-mr-md">
+                        <q-icon name="fa-solid fa-lock" size="36px" color="amber-6" />
                     </div>
-                    <div class="q-my-sm">
-                        <label for="first_name">New Password</label>
-                        <q-input type="password" filled v-model="clonedUser.new_password" color="amber-6" lazy-rules debounce="500" :rules="[rules.required, rules.min, rules.verifyUniqueNewPwd]"/>
+                    <div class="col">
+                        <div class="text-h6">Change Password</div>
+                        <div class="text-body2 text-grey-5">for {{ props.user.first_name }} {{ props.user.last_name }}</div>
                     </div>
-                    <div class="q-my-sm">
-                        <label for="first_name">Confirm New Password</label>
-                        <q-input type="password" filled v-model="clonedUser.confirm_password" color="amber-6" lazy-rules :rules="[rules.required, rules.min, rules.matchPwd]"/>
-                    </div>
-                    
-                </q-card-section>
-                <q-card-actions align="right" class="q-pa-lg">
-                    <q-btn flat label="Cancel" color="amber-6" text-color="black" @click="cancelChangePasswordDialog"/>
-                    <q-btn type="submit" label="Save" color="amber-6" text-color="black"/>
-                </q-card-actions>
-            </q-form>
-        </q-card>
-    </div>
+                </div>
+                
+                <div class="q-my-sm" v-if="props.page === 'profile'">
+                    <label for="first_name">Current Password</label>
+                    <q-input type="password" filled v-model="clonedUser.current_password" color="amber-6" lazy-rules debounce="500" :rules="[rules.required, rules.verifyCurrentPwd]" class="q-mt-sm"/>
+                </div>
+                <div class="q-my-sm">
+                    <label for="first_name">New Password</label>
+                    <q-input type="password" filled v-model="clonedUser.new_password" color="amber-6" lazy-rules debounce="500" :rules="[rules.required, rules.min, rules.verifyUniqueNewPwd]" class="q-mt-sm"/>
+                </div>
+                <div class="q-my-sm">
+                    <label for="first_name">Confirm New Password</label>
+                    <q-input type="password" filled v-model="clonedUser.confirm_password" color="amber-6" lazy-rules :rules="[rules.required, rules.min, rules.matchPwd]" class="q-mt-sm"/>
+                </div>
+                
+            </q-card-section>
+            <q-card-actions align="right" class="q-pb-lg q-mr-lg">
+                <q-btn flat icon="close" label="Cancel" color="amber-6" text-color="white" @click="cancelChangePasswordDialog"/>
+                <q-btn type="submit" unelevated icon="save" label="Save Password" color="purple" text-color="white"/>
+            </q-card-actions>
+        </q-form>
+    </q-card>
 </template>
 
 <script setup>
@@ -89,3 +96,14 @@
         }
     }
 </script>
+<!-- <style scoped>
+.task-icon-wrapper {
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 193, 7, 0.1);
+}
+</style> -->

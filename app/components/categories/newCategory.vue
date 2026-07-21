@@ -1,5 +1,5 @@
 <template>
-    <q-card style="width: 500px" class="category-form">
+    <q-card style="width: 500px; padding: 10px 20px 20px 20px;" class="category-form">
         <q-form @submit="saveNewCategory">
             <q-card-section class="row items-center q-pb-none q-mx-md q-my-md">
                 <div class="text-h6">New Category</div>
@@ -16,9 +16,9 @@
                     <ReusablesIconPicker v-model="newCategory.icon" class="q-mt-sm"/>
                 </div>
             </q-card-section>
-            <q-card-actions align="right" class="q-pa-lg">
+            <q-card-actions align="right" class="q-pb-lg q-mr-lg">
                 <q-btn flat label="Cancel" color="amber-6" text-color="white" :loading="submitting" :disable="submitting" @click="cancelNewCategoryDialog"/>
-                <q-btn type="submit" label="Save Category" color="amber-6" text-color="black"/>
+                <q-btn type="submit" unelevated icon="save" label="Save Category" color="purple" text-color="white"/>
             </q-card-actions>
         </q-form>
     </q-card>

@@ -1,5 +1,5 @@
 <template>
-    <q-card style="width: 500px" class="task-form">
+    <q-card style="width: 500px; padding: 10px 20px 20px 20px;" class="task-form">
         <q-form @submit="updateTodo">
             <q-card-section class="row items-center q-pb-none q-mx-md q-my-md">
                 <div class="text-h6">Edit Task</div>
@@ -51,7 +51,7 @@
                 </div>
                 <div class="q-my-sm q-mt-lg">
                     <label for="description">Date</label>
-                    <q-input outlined v-model="clonedTodo.dueDate" mask="date" lazy-rules :rules="[rules.required]">
+                    <q-input outlined v-model="clonedTodo.dueDate" mask="date" lazy-rules :rules="[rules.required]" class="q-mt-sm">
                         <template v-slot:append>
                             <q-icon name="event" color="white" class="cursor-pointer">
                             <q-popup-proxy cover transition-show="scale" transition-hide="scale">
@@ -67,7 +67,7 @@
                 </div>
                 <div class="q-my-sm">
                     <label for="description">Time</label>
-                    <q-input outlined v-model="clonedTodo.time" mask="time" lazy-rules :rules="[rules.required]">
+                    <q-input outlined v-model="clonedTodo.time" mask="time" lazy-rules :rules="[rules.required]" class="q-mt-sm">
                         <template v-slot:append>
                         <q-icon name="access_time" color="white" class="cursor-pointer">
                             <q-popup-proxy
@@ -87,9 +87,9 @@
                 </div>
             </q-card-section>
 
-            <q-card-actions align="right" class="q-pa-lg">
-                <q-btn flat label="Cancel" color="amber-6" text-color="black" @click="cancelEditTaskDialog"/>
-                <q-btn type="submit" label="Save Task" color="amber-6" text-color="black"/>
+            <q-card-actions align="right" class="q-pb-lg q-mr-lg">
+                <q-btn flat label="Cancel" color="amber-6" text-color="white" @click="cancelEditTaskDialog"/>
+                <q-btn type="submit" unelevated icon="save" label="Save Task" color="purple" text-color="white"/>
             </q-card-actions>
         </q-form>
     </q-card>
