@@ -11,6 +11,12 @@ body {
     border-radius: 10px !important;
     color: white;
 }
+.todo-action-dropdown {
+    background-color: #1c2637;
+    border: 1px solid #28303f;
+    /* border-radius: 15px !important; */
+    color: white;
+}
 .task-form .q-field__control,
 .category-form .q-field__control,
 .user-form .q-field__control {

@@ -113,6 +113,7 @@
                                 <div class="q-gutter-xs">
                                     <q-avatar color="deep-purple" text-color="white" size="28px" class="overlapping q-mt-none">
                                         {{ getNameInitials(todo.createdBy) }}
+                                        <q-tooltip anchor="bottom middle" self="top middle" :offset="[10, 10]">{{ getFullName(todo.createdBy) }}</q-tooltip>
                                     </q-avatar>
                                 </div>
                             </q-item-section>
@@ -121,31 +122,36 @@
                             <q-item-section side>
                                 <div class="text-grey-8 q-gutter-xs">
                                     <q-btn-dropdown size="12px" dense flat unelevated color="grey-4" text-color="grey-5" dropdown-icon="more_vert" class="btn-action q-ml-xs">
-                                        <q-list>
+                                        <q-list class="todo-action-dropdown">
                                             <q-item clickable v-close-popup @click="todoActions('view', todo)">
-                                                <q-item-section avatar>
-                                                    <q-avatar icon="fa-solid fa-eye" size="2em" color="green" text-color="white" />
-                                                </q-item-section>
+                                                <div class="q-mr-md action-dropdown-wrapper">
+                                                    <q-icon name="fa-solid fa-eye" text-color="white" size="2em" color="amber-7" />
+                                                </div>
+                                                
                                                 <q-item-section>
-                                                    <q-item-label>View</q-item-label>
+                                                    <q-item-label>View Details</q-item-label>
                                                 </q-item-section>
                                             </q-item>
+
+                                            <q-separator color="blue-grey-10" />
 
                                             <q-item clickable v-close-popup @click="todoActions('edit', todo)">
-                                                <q-item-section avatar>
-                                                    <q-avatar icon="edit" size="2em" color="primary" text-color="white" />
-                                                </q-item-section>
+                                                <div class="q-mr-md action-dropdown-wrapper">
+                                                    <q-icon name="fa-solid fa-pen-to-square" text-color="white" size="2em" color="green" />
+                                                </div>
                                                 <q-item-section>
-                                                    <q-item-label>Edit</q-item-label>
+                                                    <q-item-label>Edit Task</q-item-label>
                                                 </q-item-section>
                                             </q-item>
 
+                                            <q-separator color="blue-grey-10" />
+
                                             <q-item clickable v-close-popup @click="todoActions('delete', todo)">
-                                                <q-item-section avatar>
-                                                    <q-avatar icon="delete" size="2em" color="red" text-color="white" />
-                                                </q-item-section>
+                                                <div class="q-mr-md action-dropdown-wrapper">
+                                                    <q-icon name="fa-regular fa-trash-can" text-color="white" size="2em" color="red" />
+                                                </div>
                                                 <q-item-section>
-                                                    <q-item-label>Delete</q-item-label>
+                                                    <q-item-label>Delete Task</q-item-label>
                                                 </q-item-section>
                                             </q-item>
                                         </q-list>
@@ -298,6 +304,10 @@
         const name = user.first_name + ' ' + user.last_name
         return name.match(/(\b\S)?/g).join("").match(/(^\S|\S$)?/g).join("").toUpperCase()
     }
+    const getFullName = (user) => {
+        if (!user) return 'Unknown'
+        return `${user.first_name || ''} ${user.last_name || ''}`.trim() || 'Unknown'
+    }
     const getStatusBgColor = (status) => {
         switch (status) {
             case 'pending':
@@ -426,7 +436,7 @@
     font-style: italic;
     font-size: 12px;
 }
-.btn-action, .chip-due, .chip-icon {
+.chip-due, .chip-icon {
     border-radius: 10px !important;
 }
 .chip-due {
@@ -455,5 +465,8 @@
 } */
 .search-input {
     border-radius: 8px;
-} 
+}
+.action-dropdown-wrapper {
+    border-radius: 10px;
+}
 </style>

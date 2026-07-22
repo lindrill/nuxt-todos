@@ -4,7 +4,7 @@
             <q-card-section class="row items-center q-pb-none q-mx-md q-my-md">
                 <div class="text-h6">Edit Category</div>
                 <q-space />
-                <q-btn icon="close" flat round dense @click="cancelNewCategoryDialog" />
+                <q-btn icon="close" flat round dense @click="cancelEditCategoryDialog" />
             </q-card-section>
             <q-card-section class="q-mx-md">
                 <div class="q-my-sm">
