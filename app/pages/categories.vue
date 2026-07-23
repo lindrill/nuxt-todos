@@ -59,6 +59,7 @@
                         no-data-label="I didn't find anything for you"
                         no-results-label="The filter didn't uncover any results"
                         class="categories-table"
+                        @row-click="viewCategory"
                         >
                         <template v-slot:body-cell-category="props">
                             <q-td :props="props">
@@ -74,7 +75,7 @@
                                         text-color="primary"
                                         class="q-ml-sm custom-chip-size"
                                     >
-                                        15
+                                        {{ props.row.todos.length }}
                                     </q-chip>
                                 </div>
                             </q-td>
@@ -114,6 +115,9 @@
         <q-dialog v-model="openDeleteDialog" backdrop-filter="blur(4px)" persistent>
             <ReusablesDeleteDialog :item="category" :table="'categories'" @cancelDeleteDialog="cancelDeleteDialog" @deleteItem="deleteCategory"/>
         </q-dialog>
+        <q-dialog v-model="openViewCategoryDialog" backdrop-filter="blur(4px)" persistent>
+            <CategoriesViewCategory :category="category" @cancelViewCategoryDialog="cancelViewCategoryDialog"/>
+        </q-dialog>
     </div>
 </template>
 
@@ -147,6 +151,7 @@
     const openNewCategoryDialog = ref(false)
     const openEditCategoryDialog = ref(false)
     const openDeleteDialog = ref(false)
+    const openViewCategoryDialog = ref(false)
     const category = ref([])
     const searchQuery = ref('')
     const selectedUser = ref(null)
@@ -160,6 +165,9 @@
     }
     const cancelDeleteDialog = (cancelDeleteDialog) => {
         openDeleteDialog.value = cancelDeleteDialog
+    }
+    const cancelViewCategoryDialog = (cancelViewCategoryDialog) => {
+        openViewCategoryDialog.value = cancelViewCategoryDialog
     }
     const saveNewCategory = () => {
         openNewCategoryDialog.value = false
@@ -193,6 +201,11 @@
     const getNameInitials = (user) => {
         const name = user.first_name + ' ' + user.last_name
         return name.match(/(\b\S)?/g).join("").match(/(^\S|\S$)?/g).join("").toUpperCase()
+    }
+    const viewCategory = (evt, row, index) => {
+        category.value = row
+        openViewCategoryDialog.value = true
+        console.log('view category tasks', row)
     }
     
     // API calls
@@ -250,6 +263,13 @@
     align-items: center;
     justify-content: center;
     background-color: rgba(100, 150, 255, 0.1);
+}
+.categories-table tbody tr {
+    cursor: pointer;
+}
+ 
+.categories-table tbody tr:hover {
+    background-color: #1a2738 !important;
 }
 </style>
 <style>

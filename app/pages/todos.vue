@@ -62,9 +62,15 @@
                 <!-- Tasks -->
                 <div v-if="todos.length > 0">
                     <q-list>
-                        <q-item class="todo-item q-my-sm todo-rounded" v-for="todo in todos" :key="todo._id">
+                        <q-item class="todo-item q-my-sm todo-rounded" 
+                            v-for="todo in todos" 
+                            :key="todo._id" 
+                            clickable
+                            v-ripple
+                            @click="todoActions('view', todo)"
+                        >
                             <!-- checkbox -->
-                            <q-item-section avatar top>
+                            <q-item-section avatar top @click.stop>
                                 <q-checkbox dark
                                     :model-value="todo.status == 'completed'" 
                                     @update:model-value="markComplete(todo)"
@@ -119,7 +125,7 @@
                             </q-item-section>
                             
                             <!-- actions -->
-                            <q-item-section side>
+                            <q-item-section side @click.stop>
                                 <div class="text-grey-8 q-gutter-xs">
                                     <q-btn-dropdown size="12px" dense flat unelevated color="grey-4" text-color="grey-5" dropdown-icon="more_vert" class="btn-action q-ml-xs">
                                         <q-list class="todo-action-dropdown">
