@@ -31,8 +31,8 @@
                                 <q-icon name="search" color="grey-4" />
                             </template>
                         </q-input>
-                         <!-- :options-dense="denseOpts" -->
                         <q-select
+                            v-if="isAdmin"
                             outlined
                             v-model="selectedUser"
                             :options="users"
@@ -40,6 +40,7 @@
                             option-value="_id" 
                             :option-label="(user) => getFullName(user)"
                             style="width: 250px;"
+                            @update:model-value="onUserSelectChange"
                             >
                             <template v-slot:prepend>
                                 <q-icon name="fa-solid fa-filter" size="18px" color="white" text-color="white" />
@@ -75,7 +76,7 @@
                                         text-color="primary"
                                         class="q-ml-sm custom-chip-size"
                                     >
-                                        {{ props.row.todos.length }}
+                                        {{ props.row.todosCount }}
                                     </q-chip>
                                 </div>
                             </q-td>
@@ -90,10 +91,10 @@
                         </template>
                         <template v-slot:body-cell-actions="props">
                             <q-td :props="props">
-                                <q-btn @click="editCategory(props.row)" flat round dense icon="fa-solid fa-pen-to-square" color="green" size="md">
+                                <q-btn @click.stop="editCategory(props.row)" flat round dense icon="fa-solid fa-pen-to-square" color="green" size="md">
                                     <q-tooltip anchor="top middle" self="bottom middle" :offset="[10, 10]">Edit Category</q-tooltip>
                                 </q-btn>
-                                <q-btn @click="removeCategory(props.row)" flat round dense icon="fa-regular fa-trash-can" color="red" size="md">
+                                <q-btn @click.stop="removeCategory(props.row)" flat round dense icon="fa-regular fa-trash-can" color="red" size="md">
                                     <q-tooltip anchor="top middle" self="bottom middle" :offset="[10, 10]">Delete Category</q-tooltip>
                                 </q-btn>
                             </q-td>
@@ -205,14 +206,20 @@
     const viewCategory = (evt, row, index) => {
         category.value = row
         openViewCategoryDialog.value = true
-        console.log('view category tasks', row)
+    }
+    const onUserSelectChange = (user) => {
+        selectedUser.value = user
+        fetchCategories()
     }
     
     // API calls
     const fetchCategories = async () => {
         try {
-            const response = await fetch('/categories/all', { params: { userId: userInfo.value._id } })
-            console.log('categegories', response)
+            let user_id = userInfo.value._id
+            if(isAdmin.value) {
+                user_id = selectedUser.value ? selectedUser.value._id : 'All'
+            }
+            const response = await fetch('/categories/all', { params: { userId: user_id, keyword: searchQuery.value } })
             categories.value = response
         } catch (err) {
             console.error('Fetch categories failed:', err)
@@ -221,18 +228,22 @@
     const fetchUsers = async () => {
         try {
             const response = await fetch('/users/all')
-            console.log('fetch users', response)
             users.value = response
             let allOption = { _id: 'All', last_name: 'All', first_name: '' };
             users.value.unshift(allOption);
             selectedUser.value = users.value[0]
-            console.log('all', users.value)
         } catch (err) {
             console.error('Fetch users failed:', err)
         }
     }
     
     // ===== COMPUTED PROPERTIES =====
+    const isAdmin = computed(() => {
+        if(userInfo.value && userInfo.value.role === 'admin') {
+            return true
+        }
+        return false
+    })
     
 
     // ===== LIFECYCLE HOOKS =====
@@ -240,6 +251,11 @@
     onMounted(() => {
         fetchCategories()
         fetchUsers()
+    })
+
+    // watch
+    watch(searchQuery, () => {
+        fetchCategories()
     })
 
 </script>

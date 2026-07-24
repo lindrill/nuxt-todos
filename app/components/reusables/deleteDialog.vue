@@ -7,7 +7,11 @@
             <div class="text-h6 text-weight-medium q-mb-sm text-center">
                 Delete this {{ getTableName }}?
             </div>
-            <div class="text-caption text-center q-px-md" style="max-width: 350px;">
+            <div class="text-caption text-center q-px-md" style="max-width: 350px;" v-if="props.table == 'categories' && item.todosCount > 0">
+                <q-icon color="red" size="xs" name="fa-solid fa-circle-exclamation" class="q-mr-xs" />
+                This category contains tasks and cannot be deleted. Remove or reassign the tasks in this category before deleting it.
+            </div>
+            <div class="text-caption text-center q-px-md" style="max-width: 350px;" v-else>
                 This action cannot be undone. This {{ getTableName }} will be permanently removed.
             </div>
         </q-card-section>
@@ -55,6 +59,11 @@
                     <div class="col">
                         <div class="text-body1 text-weight-medium q-mb-xs">
                             {{ item.title }}
+                            <q-badge 
+                                v-if="item.todosCount"
+                                :label="`${item.todosCount} task${item.todosCount > 1 ? 's' : ''}`" 
+                                class="q-mr-sm text-capitalize"
+                            />
                         </div>
                         <div class="row items-center text-caption">
                             <span class="q-mr-sm">
@@ -97,9 +106,10 @@
             <q-btn flat label="Cancel" icon="close" color="amber-6" text-color="white" @click="cancelDeleteDialog"/>
             <q-btn 
                 unelevated
-                label="Delete Task" 
+                :label="`Delete ${getTableName}`" 
                 icon="delete"
                 color="red"
+                :disabled="props.table == 'categories' && item.todosCount > 0"
                 @click="deleteItem"
             />
         </q-card-actions>

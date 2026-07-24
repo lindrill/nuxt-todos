@@ -20,7 +20,7 @@
 
             <q-separator class="q-mb-lg" color="blue-grey-10" />
 
-             <!-- Due Date and Time -->
+            <!-- Due Date and Time -->
             <div class="row">
                 <div class="col-6">
                     <div class="info-section">

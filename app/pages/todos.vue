@@ -252,7 +252,6 @@
     }
     const todoActions = (action, selectedTodo) => {
         todo.value = selectedTodo
-        console.log('selected todo', todo.value)
         if(action == "edit") {
             openEditTaskDialog.value = true
         } else if(action == "delete") {
@@ -276,7 +275,6 @@
     const fetchTodos = async () => {
         try {
             const response = await fetch('/todos/all', { params: { userId: userInfo.value._id, skip: skip.value, limit: limit.value, keyword: searchQuery.value, status: activeTab.value } })
-            console.log('fetch todos', response)
             todos.value = response.todos
             totalTodos.value = response.total
             pendingCount.value = response.pendingCount
@@ -384,27 +382,6 @@
     const skip = computed(() => {
         return (currentPage.value - 1) * limit.value
     })
-    // const pendingCount = computed(() => {
-    //     return todos.value.filter(t => t.status === 'pending').length
-    // })
-    
-    // const completedCount = computed(() => {
-    //     return todos.value.filter(t => t.status === 'completed').length
-    // })
-    
-    // const filteredTodos = computed(() => {
-    //     let filtered = todos.value
-        
-    //     // Filter by tab
-    //     if (activeTab.value === 'pending') {
-    //         filtered = filtered.filter(t => t.status === 'pending')
-    //     } else if (activeTab.value === 'completed') {
-    //         filtered = filtered.filter(t => t.status === 'completed')
-    //     }
-        
-    //     return filtered
-    // })
-    
 
     // ===== LIFECYCLE HOOKS =====
 
