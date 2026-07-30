@@ -35,8 +35,13 @@
                             outlined
                             v-model="selectedRole"
                             :options="roles"
+                            option-value="value" 
+                            option-label="name"
+                            emit-value
+                            map-options
                             dense
                             style="width: 150px;"
+                            @update:model-value="onRoleSelectChange"
                             >
                             <template v-slot:prepend>
                                 <q-icon name="fa-solid fa-user-group" size="18px" color="white" text-color="white" class="q-mr-sm" />
@@ -62,6 +67,15 @@
                                     {{ getNameInitials(props.row) }}
                                 </q-avatar>
                                 <span class="q-ml-md">{{ props.row?.first_name +' '+ props.row?.last_name }}</span>
+                            </q-td>
+                        </template>
+                        <template v-slot:body-cell-role="props">
+                            <q-td :props="props">
+                                <div class="q-gutter-xs">
+                                    <q-chip :text-color="getRoleTextColor(props.row.role)" size="sm" class="q-px-sm q-ml-xs" :style="{ backgroundColor: getRoleBgColor(props.row.role) }">
+                                        <span class="text-weight-medium">{{ props.row.role }}</span>
+                                    </q-chip>
+                                </div>
                             </q-td>
                         </template>
                         <template v-slot:body-cell-actions="props">
@@ -129,8 +143,12 @@
     const openChangePasswordDialog = ref(false)
     const user = ref([])
     const searchQuery = ref('')
-    const selectedRole = ref('All')
-    const roles = ref(['All', 'Admin', 'Member'])
+    const roles = ref([
+        { name: 'All Roles', value: 'all' },
+        { name: 'Admin', value: 'admin' },
+        { name: 'Member', value: 'member' },
+    ])
+    const selectedRole = ref('all')
     
     // ===== METHODS =====
     const cancelNewUserDialog = (cancelNewUserDialog) => {
@@ -183,11 +201,36 @@
         const name = user.first_name + ' ' + user.last_name
         return name.match(/(\b\S)?/g).join("").match(/(^\S|\S$)?/g).join("").toUpperCase()
     }
+    const getRoleBgColor = (role) => {
+        switch (role) {
+            case 'admin':
+                return '#1c2f4c'
+            case 'member':
+                return '#1e3833'
+            default:
+                return 'grey-2'
+        }
+    }
+    const getRoleTextColor = (role) => {
+        switch (role) {
+            case 'admin':
+                return 'light-blue'
+            case 'member':
+                return 'green'
+            default:
+                return 'black'
+        }
+    }
+    const onRoleSelectChange = (role) => {
+        console.log('onRoleSelectChange', role)
+        selectedRole.value = role
+        fetchUsers()
+    }
     
     // API calls
     const fetchUsers = async () => {
         try {
-            const response = await fetch('/users/all')
+            const response = await fetch('/users/all', { params: { keyword: searchQuery.value, role: selectedRole.value } })
             console.log('fetch users', response)
             users.value = response
         } catch (err) {
@@ -199,8 +242,12 @@
     
 
     // ===== LIFECYCLE HOOKS =====
-
     onMounted(() => {
+        fetchUsers()
+    })
+
+    // watch
+    watch(searchQuery, () => {
         fetchUsers()
     })
 
