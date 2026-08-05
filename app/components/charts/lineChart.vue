@@ -50,7 +50,7 @@
         let daysInMonth = moment().daysInMonth();
         let monthsInYear = moment.monthsShort()
 
-        if(props.date_type === 'This Year') {
+        if(props.date_type === 'This Year') { // This Year
             const statsMap = {}
             props.statistics.forEach((stat) => {
                 statsMap[stat._id] = stat.count
@@ -60,7 +60,7 @@
                 labels.push(monthsInYear[month - 1])
                 data.push(statsMap[monthsInYear[month - 1]] ?? 0)
             }
-        } else if(props.date_type === 'This Month') {
+        } else if(props.date_type === 'This Month') { // This Month
             for (let day = 1; day <= daysInMonth; day++) {
                 labels.push(day)
                 props.statistics.forEach((stat) => {
@@ -71,20 +71,36 @@
                     }
                 });
             }
-        } else if(props.date_type === 'This Week') {
+        } else if(props.date_type === 'This Week') { // This Week
+
+            const statsMap = {}
+            props.statistics.forEach((stat) => {
+                statsMap[stat._id] = stat.count
+            })
+
             for (let day = 1; day <= 7; day++) {
                 labels.push(days[day])
-                props.statistics.forEach((stat) => {
-                    if(stat._id == day) {
-                        data.push(stat.count)
-                    } else {
-                        data.push(0)
-                    }
-                });
+                data.push(statsMap[day] ?? 0)
             }
 
-        } else {
+        } else { // Today
 
+            const statsMap = {}
+            props.statistics.forEach((stat) => {
+                statsMap[stat._id] = stat.count
+            })
+        
+            const formatHour = (hour) => {
+                const period = hour >= 12 ? 'PM' : 'AM'
+                let displayHour = hour % 12
+                if (displayHour === 0) displayHour = 12
+                return `${displayHour}${period}`
+            }
+        
+            for (let hour = 0; hour <= 23; hour++) {
+                labels.push(formatHour(hour))
+                data.push(statsMap[String(hour).padStart(2, '0')] ?? 0)
+            }
         }
         return { labels, data }
     })
