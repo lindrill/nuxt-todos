@@ -113,7 +113,7 @@
                 <q-card class="my-card card-rounded dashboard-stat">
                     <q-card-section>
                         <div class="">
-                            <ChartsLineChart />
+                            <ChartsLineChart :statistics="chartStats" :date_type="selectedDate"/>
                         </div>
                     </q-card-section>
                 </q-card>
@@ -189,6 +189,7 @@
     const selectedUser = ref(null)
     const dateRange = ref(['This Year', 'This Month', 'This Week', 'Today'])
     const todosCount = ref({ total: 0, pending: 0, completed: 0 })
+    const chartStats = ref([])
     const users = ref([])
     const onDateSelectChange = (date) => {
         console.log('date', date)
@@ -234,6 +235,7 @@
     const saveNewTodo = () => {
         openNewTaskDialog.value = false
         notification('positive', 'Task successfully saved!')
+        fetchTodosCount()
     }
     const saveNewCategory    = () => {
         openNewCategoryDialog.value = false
@@ -271,10 +273,11 @@
     const fetchTodosCount = async () => {
         try {
 
-            const response = await fetch('/todos/statistics', { params: { start_date: startDate.value, end_date: endDate.value } })
+            const response = await fetch('/todos/statistics', { params: { date_type: selectedDate.value, start_date: startDate.value, end_date: endDate.value } })
             todosCount.value.total = response.total
             todosCount.value.pending = response.pendingCount
             todosCount.value.completed = response.completedCount
+            chartStats.value = response.chartStats
         } catch (err) {
             console.error('Fetch failed:', err)
         }
@@ -291,10 +294,10 @@
         return false
     })
     const getCompletedPercentage = computed(() => {
-        return Math.round((todosCount.value.completed / todosCount.value.total) * 100)
+        return Math.round((todosCount.value.completed / todosCount.value.total) * 100) || 0
     })
     const getPendingPercentage = computed(() => {
-        return Math.round((todosCount.value.pending / todosCount.value.total) * 100)
+        return Math.round((todosCount.value.pending / todosCount.value.total) * 100) || 0
     })
     
 

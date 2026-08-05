@@ -5,80 +5,144 @@
 </template>
 
 <script setup>
-import { Chart } from 'chart.js'
+    import { Chart } from 'chart.js'
+    import moment from 'moment'
 
-const chartCanvas = ref(null)
-let chartInstance = null
+    const chartCanvas = ref(null)
+    let chartInstance = null
 
-const props = defineProps({
-    labels: {
-        type: Array,
-        default: () => ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
-    },
-    data: {
-        type: Array,
-        default: () => [3, 2, 3, 2, 1, 1, 0]
-    },
-    label: {
-        type: String,
-        default: 'Tasks Completed'
-    },
-    borderColor: {
-        type: String,
-        default: 'rgb(255, 193, 7)'
-    },
-    backgroundColor: {
-        type: String,
-        default: 'rgba(255, 193, 7, 0.2)'
-    }
-})
-
-onMounted(() => {
-    chartInstance = new Chart(chartCanvas.value, {
-        type: 'line',
-        data: {
-        labels: props.labels,
-        datasets: [{
-            label: props.label,
-            data: props.data,
-            borderColor: props.borderColor,
-            backgroundColor: props.backgroundColor,
-            tension: 0.4,
-            fill: true,
-            pointRadius: 4,
-            pointHoverRadius: 6
-        }]
+    const props = defineProps({
+        labels: {
+            type: Array,
+            default: () => ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
         },
-        options: {
-            responsive: true,
-            maintainAspectRatio: true,
-            plugins: {
-                legend: {
-                    labels: {
-                        color: '#fff'
-                    }
-                }
-            },
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    ticks: { color: '#fff' },
-                    grid: { color: 'rgba(255, 255, 255, 0.1)' }
-                },
-                x: {
-                    ticks: { color: '#fff' },
-                    grid: { color: 'rgba(255, 255, 255, 0.1)' }
-                }
-            }
+        data: {
+            type: Array,
+            default: () => [3, 2, 3, 2, 1, 1, 0]
+        },
+        label: {
+            type: String,
+            default: 'Tasks'
+        },
+        borderColor: {
+            type: String,
+            default: 'rgb(255, 193, 7)'
+        },
+        backgroundColor: {
+            type: String,
+            default: 'rgba(255, 193, 7, 0.2)'
+        },
+        statistics: {
+            type: Array,
+            default: () => []
+        },
+        date_type: {
+            type: String,
+            default: 'This Year'
         }
     })
-})
 
-onUnmounted(() => {
-    if (chartInstance) {
-        chartInstance.destroy()
-    }
-})
+    // ===== COMPUTED PROPERTIES =====
+    const dataset = computed(() => {
+        let labels = []
+        let data = []
+        let days = { 1: "Mon", 2: "Tue", 3: "Wed", 4: "Thu", 5: "Fri", 6: "Sat", 7: "Sun" }
+        let daysInMonth = moment().daysInMonth();
+        let monthsInYear = moment.monthsShort()
+
+        if(props.date_type === 'This Year') {
+            const statsMap = {}
+            props.statistics.forEach((stat) => {
+                statsMap[stat._id] = stat.count
+            })
+
+            for (let month = 1; month <= monthsInYear.length; month++) {
+                labels.push(monthsInYear[month - 1])
+                data.push(statsMap[monthsInYear[month - 1]] ?? 0)
+            }
+        } else if(props.date_type === 'This Month') {
+            for (let day = 1; day <= daysInMonth; day++) {
+                labels.push(day)
+                props.statistics.forEach((stat) => {
+                    if(stat._id == day) {
+                        data.push(stat.count)
+                    } else {
+                        data.push(0)
+                    }
+                });
+            }
+        } else if(props.date_type === 'This Week') {
+            for (let day = 1; day <= 7; day++) {
+                labels.push(days[day])
+                props.statistics.forEach((stat) => {
+                    if(stat._id == day) {
+                        data.push(stat.count)
+                    } else {
+                        data.push(0)
+                    }
+                });
+            }
+
+        } else {
+
+        }
+        return { labels, data }
+    })
+
+    onMounted(() => {
+        chartInstance = new Chart(chartCanvas.value, {
+            type: 'line',
+            data: {
+            labels: dataset.value.labels,
+            datasets: [{
+                label: props.label,
+                data: dataset.value.data,
+                borderColor: props.borderColor,
+                backgroundColor: props.backgroundColor,
+                tension: 0.4,
+                fill: true,
+                pointRadius: 4,
+                pointHoverRadius: 6
+            }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                plugins: {
+                    legend: {
+                        labels: {
+                            color: '#fff'
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: { color: '#fff' },
+                        grid: { color: 'rgba(255, 255, 255, 0.1)' }
+                    },
+                    x: {
+                        ticks: { color: '#fff' },
+                        grid: { color: 'rgba(255, 255, 255, 0.1)' }
+                    }
+                }
+            }
+        })
+    })
+
+    onUnmounted(() => {
+        if (chartInstance) {
+            chartInstance.destroy()
+        }
+    })
+
+    // watch
+    watch(() => props.statistics, () => {
+        if (!chartInstance) return
+        chartInstance.data.labels = dataset.value.labels
+        chartInstance.data.datasets[0].data = dataset.value.data
+        chartInstance.update()
+    })
 </script>
 
 <style scoped>
