@@ -57,7 +57,7 @@
                                             <q-icon left color="amber-6" name="fa-regular fa-calendar-check" />
                                         </q-item-section>
                                         <q-item-section>
-                                            <q-item-label class="text-weight-bold text-subtitle1">{{ todosCount.completed }} Tasks</q-item-label>
+                                            <q-item-label class="text-weight-bold text-subtitle1">{{ todosCount.completed }} {{ todosCount.completed === 1 ? 'Task' : 'Tasks' }}</q-item-label>
                                             <q-item-label class="text-caption" lines="2">Completed</q-item-label>
                                         </q-item-section>
                                     </q-item>
@@ -87,7 +87,7 @@
                                             <q-icon left color="amber-6" name="fa-solid fa-hourglass-half" />
                                         </q-item-section>
                                         <q-item-section>
-                                            <q-item-label class="text-weight-bold text-subtitle1">{{ todosCount.pending }} Tasks</q-item-label>
+                                            <q-item-label class="text-weight-bold text-subtitle1">{{ todosCount.pending }} {{ todosCount.pending === 1 ? 'Task' : 'Tasks' }}</q-item-label>
                                             <q-item-label class="text-caption" lines="2">Pending</q-item-label>
                                         </q-item-section>
                                     </q-item>
@@ -131,12 +131,12 @@
                                 </q-btn>
                             </div>
                             <div class="row q-col-gutter-lg">
-                                <div v-for="category in categories1" :key="category.id" class="col-3">
-                                    <q-card class="category-card card-rounded text-center cursor-pointer">
+                                <div v-for="category in categoriesList" :key="category._id.category" class="col-3">
+                                    <q-card class="category-card card-rounded text-center">
                                         <q-card-section class="q-py-lg">
-                                            <q-icon :name="category.icon" size="1.5rem" color="white" class="q-mb-sm"/>
-                                            <div class="text-caption text-weight-medium text-amber-6">{{ category.name }}</div>
-                                            <div class="text-white text-caption">12 tasks</div>
+                                            <q-icon :name="'fa-solid fa-'+category._id.icon" size="1.5rem" color="white" class="q-mb-sm"/>
+                                            <div class="text-caption text-weight-medium text-amber-6">{{ category._id.category }}</div>
+                                            <div class="text-white text-caption">{{ category.count }} {{ category.count === 1 ? 'task' : 'tasks' }}</div>
                                         </q-card-section>
                                     </q-card>
                                 </div>
@@ -144,7 +144,7 @@
                         </div>
                         <div class="flex flex-center q-mt-md">
                             <q-btn color="amber-6" text-color="grey-10" rounded flat>
-                                <span class="text-amber-6 view-cat-btn">View all categories</span>
+                                <span class="text-amber-6 view-cat-btn" @click="viewAllCategories">View all categories</span>
                                 <q-icon right size="1em" name="fa-solid fa-angle-right" color="amber-6"/>
                             </q-btn>
                         </div>
@@ -161,6 +161,9 @@
         <q-dialog v-model="openNewCategoryDialog" backdrop-filter="blur(4px)" persistent>
             <CategoriesNewCategory @cancelNewCategoryDialog="cancelNewCategoryDialog" @saveNewCategory="saveNewCategory"/>
         </q-dialog>
+        <q-dialog v-model="openAllCategoriesDialog" backdrop-filter="blur(4px)" persistent>
+            <DashboardCategoriesDialog :categories="categories" @cancelViewCategoryDialog="cancelViewCategoryDialog"/>
+        </q-dialog>
     </div>
 </template>
 
@@ -176,12 +179,7 @@
 
     const openNewTaskDialog = ref(false)
     const openNewCategoryDialog = ref(false)
-    const categories1 = ref([
-        { id: 1, name: 'Vacation', icon: 'fa-solid fa-umbrella-beach' },
-        { id: 2, name: 'Groceries', icon: 'fa-solid fa-cart-shopping' },
-        { id: 3, name: 'Chores', icon: 'fa-solid fa-broom' },
-        { id: 4, name: 'Payments', icon: 'fa-solid fa-money-bill' }
-    ])
+    const openAllCategoriesDialog = ref(false)
     const categories = ref([])
     const selectedDate = ref('This Year')
     const startDate = ref(moment().startOf('year').format('YYYY-MM-DD'))
@@ -222,7 +220,7 @@
     }
     const onUserSelectChange = (user) => {
         selectedUser.value = user
-        // fetchTodosCount()
+        fetchTodosCount()
     }
 
     // ===== METHODS =====
@@ -232,12 +230,15 @@
     const cancelNewCategoryDialog = (cancelNewCategoryDialog) => {
         openNewCategoryDialog.value = cancelNewCategoryDialog
     }
+    const cancelViewCategoryDialog = (cancelViewCategoryDialog) => {
+        openAllCategoriesDialog.value = cancelViewCategoryDialog
+    }
     const saveNewTodo = () => {
         openNewTaskDialog.value = false
         notification('positive', 'Task successfully saved!')
         fetchTodosCount()
     }
-    const saveNewCategory    = () => {
+    const saveNewCategory = () => {
         openNewCategoryDialog.value = false
         notification('positive', 'Category successfully saved!')
         fetchCategories()
@@ -247,6 +248,9 @@
             return 'All'
         }
         return `${user.first_name || ''} ${user.last_name || ''}`.trim() || 'Unknown'
+    }
+    const viewAllCategories = () => {
+        openAllCategoriesDialog.value = true
     }
     
     // API calls
@@ -272,12 +276,16 @@
     }
     const fetchTodosCount = async () => {
         try {
-
-            const response = await fetch('/todos/statistics', { params: { date_type: selectedDate.value, start_date: startDate.value, end_date: endDate.value } })
+            let user_id = userInfo.value._id
+            if(isAdmin.value) {
+                user_id = selectedUser.value ? selectedUser.value._id : 'All'
+            }
+            const response = await fetch('/todos/statistics', { params: { userId: user_id, date_type: selectedDate.value, start_date: startDate.value, end_date: endDate.value } })
             todosCount.value.total = response.total
             todosCount.value.pending = response.pendingCount
             todosCount.value.completed = response.completedCount
             chartStats.value = response.chartStats
+            categories.value = response.categories
         } catch (err) {
             console.error('Fetch failed:', err)
         }
@@ -299,10 +307,13 @@
     const getPendingPercentage = computed(() => {
         return Math.round((todosCount.value.pending / todosCount.value.total) * 100) || 0
     })
-    
+    const categoriesList = computed(() => {
+        return categories.value.slice(0, 4);
+    })
 
     // ===== LIFECYCLE HOOKS =====
     onMounted(() => {
+        fetchUsers()
         fetchCategories()
         fetchTodosCount()
     })
@@ -314,6 +325,9 @@
     background-color: #0e1827 !important;
     border: 1px solid #1d2837;
 }
+.dashboard-filters {
+    margin-bottom: 35px;
+}
 .dashboard-stat {
     background-color: #152031;
     border: 1px solid #1d2837;
@@ -323,6 +337,10 @@
 }
 </style>
 <style>
+.category-card {
+    background-color: #0e1827 !important;
+    border: 1px solid #1d2837;
+}
 .dashboard-filters .q-select .q-field__append .q-icon{
     color: #ffffff !important;
 }
