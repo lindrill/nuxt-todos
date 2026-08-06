@@ -25,25 +25,25 @@
                         </q-item>
                         
                         <q-item
-                            v-for="activity in activities"
-                            :key="'id_here'"
+                            v-for="todo in todos"
+                            :key="'sidebar'+todo._id"
                             class="q-my-md"
                             flat
                             clickable
                             v-ripple
                         >
                             <q-item-section avatar>
-                                <q-icon color="blue" size="22px" :name="'fa-solid fa-' + activity.icon" />
+                                <q-icon color="blue" size="22px" :name="'fa-solid fa-' + (todo.category?.icon || 'folder')" />
                             </q-item-section>
 
-                            <q-item-section class="text-white">
-                                <q-item-label>{{ activity.name }}</q-item-label>
-                                <q-item-label caption lines="1" class="text-white">{{ activity.category }}</q-item-label>
+                            <q-item-section class="text-white text-weight-medium">
+                                <q-item-label>{{ todo.title }}</q-item-label>
+                                <q-item-label caption lines="1" class="text-blue-grey-4">{{ todo.category?.title || 'Uncategorized' }}</q-item-label>
                             </q-item-section>
 
                             <q-item-section side>
-                                <q-item-label caption class="text-grey-4" clickable>Jul 21</q-item-label>
-                                <q-item-label caption class="text-grey-4" clickable>Sat</q-item-label>
+                                <q-item-label caption class="text-grey-4" clickable>{{ taskDue(todo)?.date }}</q-item-label>
+                                <q-item-label caption class="text-grey-4" clickable>{{ taskDue(todo)?.day }}</q-item-label>
                             </q-item-section>
                         </q-item>
                     </q-list>
@@ -55,7 +55,9 @@
 
 <script setup>
     import { ref } from 'vue'
+    import moment from 'moment'
 
+    const props = defineProps(['todos'])
     const date = ref('2026/06/20')
     const minDate = ref('2020/01')  // January 2020
     const maxDate = ref('2030/12')  // December 2030
@@ -92,6 +94,11 @@
             category: 'Chores'
         },
     ]
+    
+    const taskDue = (todo) => {
+        let due = { date: moment.utc(todo.dueDate).format("MMM D"), day: moment.utc(todo.dueDate).format("ddd") }
+        return due
+    }
 </script>
 
 <style scoped>

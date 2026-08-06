@@ -126,7 +126,7 @@
 
 <style scoped>
 .menu {
-    min-height: 100dvh;
+    min-height: 100%;
     background-color: #152031;
 }
 .app-name {
