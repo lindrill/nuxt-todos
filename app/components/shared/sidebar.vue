@@ -3,17 +3,15 @@
         <q-card class="my-card sidebar-card card-rounded">
             <q-card-section>
                 <span class="text-white text-weight-bold q-mt-md">Calendar</span>
-                <q-date
-                    v-model="date"
-                    :model-value="date"
-                    minimal
-                    flat
-                    :navigation-min-year-month="minDate"
-                    :navigation-max-year-month="maxDate"
-                    color="amber"
-                    text-color="white"
-                    class="custom-calendar"
-                />
+                <ClientOnly>
+                    <VCalendar
+                        color="yellow"
+                        transparent 
+                        borderless 
+                        :is-dark="true"
+                        :attributes="calendarEvents"
+                    />
+                </ClientOnly>
             </q-card-section>
         </q-card>
         <q-card class="my-card upcoming-task-card card-rounded q-mt-md">
@@ -57,48 +55,51 @@
     import { ref } from 'vue'
     import moment from 'moment'
 
-    const props = defineProps(['todos'])
-    const date = ref('2026/06/20')
-    const minDate = ref('2020/01')  // January 2020
-    const maxDate = ref('2030/12')  // December 2030
+    const props = defineProps(['todos', 'pendingDates', 'completedDates'])
 
-    const activities = [
-        {
-            id: 1,
-            icon: 'burger',
-            name: 'Brunch this weekend',
-            category: 'Vacation'
-        },
-            {
-            id: 2,
-            icon: 'wifi',
-            name: 'Pay internet bill',
-            category: 'Payments'
-        },
-            {
-            id: 3,
-            icon: 'hands-bubbles',
-            name: 'Do the laundry',
-            category: 'Chores'
-        },
-            {
-            id: 4,
-            icon: 'capsules',
-            name: 'Buy headache medicine',
-            category: 'Groceries'
-        },
-            {
-            id: 5,
-            icon: 'pizza-slice',
-            name: 'Recipe to try',
-            category: 'Chores'
-        },
-    ]
-    
+    // ===== METHODS =====
     const taskDue = (todo) => {
         let due = { date: moment.utc(todo.dueDate).format("MMM D"), day: moment.utc(todo.dueDate).format("ddd") }
         return due
     }
+
+    // ===== COMPUTED PROPERTIES =====
+    const countPendingDates = computed(() => {
+        const counts = {}
+        props.pendingDates.forEach(date => {
+            const key = moment.utc(date).format('YYYY-MM-DD') // normalize so same-day dates group together
+            counts[key] = (counts[key] || 0) + 1
+        })
+        return Object.entries(counts).map(([date, count]) => ({ date, count }))
+    })
+
+    const countCompletedDates = computed(() => {
+        const counts = {}
+        props.completedDates.forEach(date => {
+            const key = moment.utc(date).format('YYYY-MM-DD') // normalize so same-day dates group together
+            counts[key] = (counts[key] || 0) + 1
+        })
+        return Object.entries(counts).map(([date, count]) => ({ date, count }))
+    })
+
+    const calendarEvents = computed(() => {
+        let dots = [
+            {
+                dot: true,
+                dates: countPendingDates.value.map(item => item.date)
+            },
+            {
+                dot: 'green',
+                dates: countCompletedDates.value.map(item => item.date)
+            }
+        ]
+        return dots
+    })
+
+    // ===== LIFECYCLE HOOKS =====
+    onMounted(() => {
+        console.log('pending count', countPendingDates.value)
+    })
 </script>
 
 <style scoped>
@@ -113,36 +114,16 @@
     /* min-height: 100dvh; */
 }
 
-.custom-calendar {
-    /* background-color: #2e384e; */
+/* .custom-calendar {
     background-color: #152031;
     color: white !important;
     width: 100%;
     margin-top: 10px;
-    /* background-color: #3c4557; */
-    /* border-radius: 8px; */
-}
-
-/* Selected date text color */
-/* .custom-calendar :deep(.q-date__calendar-item--in .q-btn__content) {
-    color: white !important;
 } */
  
 /* Or target the selected state more specifically */
-.custom-calendar :deep(.q-btn.bg-amber .q-btn__content) {
+/* .custom-calendar :deep(.q-btn.bg-amber .q-btn__content) {
     color: black !important;
-}
-
-/* .custom-calendar :deep(.q-date__header) {
-    color: white !important;
 } */
 
-/* calendar dates */
-/* .custom-calendar :deep(.q-date__calendar-item .q-btn) {
-    color: white !important;
-} */
-
-/* .custom-calendar :deep(.q-date__calendar-weekdays) {
-    color: white !important;
-} */
 </style>

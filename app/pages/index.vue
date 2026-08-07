@@ -152,7 +152,7 @@
                 </q-card>
             </div>
         </div>
-        <SharedSidebar />
+        <SharedSidebar :todos="todos" :pendingDates="pendingDates" :completedDates="completedDates"/>
     </div>
     <div>
         <q-dialog v-model="openNewTaskDialog" backdrop-filter="blur(4px)" persistent>
@@ -187,6 +187,9 @@
     const selectedUser = ref(null)
     const dateRange = ref(['This Year', 'This Month', 'This Week', 'Today'])
     const todosCount = ref({ total: 0, pending: 0, completed: 0 })
+    const todos = ref([])
+    const pendingDates = ref([])
+    const completedDates = ref([])
     const chartStats = ref([])
     const users = ref([])
     const onDateSelectChange = (date) => {
@@ -290,6 +293,16 @@
             console.error('Fetch failed:', err)
         }
     }
+    const fetchTodos = async () => {
+        try {
+            const response = await fetch('/todos/all', { params: { userId: userInfo.value._id, skip: 0, limit: 5, keyword: '', status: 'pending' } })
+            todos.value = response.todos
+            pendingDates.value = response.pendingDates  
+            completedDates.value = response.completedDates
+        } catch (err) {
+            console.error('Fetch failed:', err)
+        }
+    }
     
     // ===== COMPUTED PROPERTIES =====
     const displayUserName = computed(() => {
@@ -313,6 +326,7 @@
 
     // ===== LIFECYCLE HOOKS =====
     onMounted(() => {
+        fetchTodos()
         fetchUsers()
         fetchCategories()
         fetchTodosCount()
