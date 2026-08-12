@@ -152,7 +152,7 @@
                 </q-card>
             </div>
         </div>
-        <SharedSidebar :todos="todos" :pendingDates="pendingDates" :completedDates="completedDates"/>
+        <SharedSidebar :todos="todos" :pendingDates="pendingDates" :completedDates="completedDates" :calendarAttributes="calendarAttributes"/>
     </div>
     <div>
         <q-dialog v-model="openNewTaskDialog" backdrop-filter="blur(4px)" persistent>
@@ -190,6 +190,7 @@
     const todos = ref([])
     const pendingDates = ref([])
     const completedDates = ref([])
+    const calendarAttributes = ref([])
     const chartStats = ref([])
     const users = ref([])
     const onDateSelectChange = (date) => {
@@ -295,10 +296,11 @@
     }
     const fetchTodos = async () => {
         try {
-            const response = await fetch('/todos/all', { params: { userId: userInfo.value._id, skip: 0, limit: 5, keyword: '', status: 'pending' } })
+            const response = await fetch('/todos/all', { params: { userId: userInfo.value._id, keyword: '' } })
             todos.value = response.todos
             pendingDates.value = response.pendingDates  
             completedDates.value = response.completedDates
+            calendarAttributes.value = response.calendarAttributes
         } catch (err) {
             console.error('Fetch failed:', err)
         }
