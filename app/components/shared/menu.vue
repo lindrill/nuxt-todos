@@ -2,7 +2,6 @@
     <div class="col-3 q-pa-md items-start q-mt-sm">
         <q-card class="my-card menu" rounded-borders>
             <q-card-section>
-
                 <q-list>
                     <q-item clickable v-ripple to="/" class="q-mb-sm">
                         <q-item-section avatar>

@@ -1,116 +1,110 @@
 <template>
-    <div class="row">
-        <SharedMenu />
-        <div class="col-6">
-            <div class="page-header row justify-between q-mt-lg q-px-md">
-                <div>
-                    <h6 class="page-title q-mt-md q-mb-none">Users</h6>
-                    <span class="text-body2 text-white">Manage and organize your team members.</span>
-                </div>
-                <div>
-                    <q-btn color="amber-6" text-color="grey-10" rounded class="q-mt-md" @click="openNewUserDialog = true">
-                        <q-icon left size="1em" name="fa-solid fa-plus" />
-                        <div>New User</div>
-                    </q-btn>
-                </div>
+    <div class="col-6">
+        <div class="page-header row justify-between q-mt-lg q-px-md">
+            <div>
+                <h6 class="page-title q-mt-md q-mb-none">Users</h6>
+                <span class="text-body2 text-white">Manage and organize your team members.</span>
             </div>
-            <div class="q-px-md q-col-gutter-sm">
-                <div class="q-mt-md q-mb-lg users-filters">
-                    <div class="row items-start q-ml-none q-px-none q-mt-md">
-                        <q-input
-                            v-model="searchQuery"
-                            dense
-                            dark
-                            outlined
-                            placeholder="Search users..."
-                            class="search-input q-mr-md"
-                            style="width: 300px;"
-                            debounce="500"
-                        >
-                            <template v-slot:append>
-                                <q-icon name="search" color="grey-4" />
-                            </template>
-                        </q-input>
-                        <q-select
-                            outlined
-                            v-model="selectedRole"
-                            :options="roles"
-                            option-value="value" 
-                            option-label="name"
-                            emit-value
-                            map-options
-                            dense
-                            style="width: 150px;"
-                            @update:model-value="onRoleSelectChange"
-                            >
-                            <template v-slot:prepend>
-                                <q-icon name="fa-solid fa-user-group" size="18px" color="white" text-color="white" class="q-mr-sm" />
-                            </template>
-                        </q-select>
-                    </div>
-                </div>
-                <div class="q-pa-sm">
-                    <q-table 
-                        :rows="users" 
-                        row-key="name" 
-                        :columns="columns" 
-                        :loading="loading"
-                        :pagination="pagination"
-                        flat 
-                        bordered
-                        no-data-label="I didn't find anything for you"
-                        no-results-label="The filter didn't uncover any results"
-                        class="users-table">
-                        <template v-slot:body-cell-name="props">
-                            <q-td :props="props">
-                                <q-avatar color="deep-purple" text-color="white" size="28px">
-                                    {{ getNameInitials(props.row) }}
-                                </q-avatar>
-                                <span class="q-ml-md">{{ props.row?.first_name +' '+ props.row?.last_name }}</span>
-                            </q-td>
-                        </template>
-                        <template v-slot:body-cell-role="props">
-                            <q-td :props="props">
-                                <div class="q-gutter-xs">
-                                    <q-chip :text-color="getRoleTextColor(props.row.role)" size="sm" class="q-px-sm q-ml-xs" :style="{ backgroundColor: getRoleBgColor(props.row.role) }">
-                                        <span class="text-weight-medium">{{ props.row.role }}</span>
-                                    </q-chip>
-                                </div>
-                            </q-td>
-                        </template>
-                        <template v-slot:body-cell-actions="props">
-                            <q-td :props="props">
-                                <q-btn @click="editUser(props.row)" flat round dense icon="fa-solid fa-pen-to-square" color="green" size="md">
-                                    <q-tooltip anchor="top middle" self="bottom middle" :offset="[10, 10]">Edit User</q-tooltip>
-                                </q-btn>
-                                <q-btn @click="changePassword(props.row)" flat round dense icon="fa-solid fa-unlock" color="amber-6" size="md">
-                                    <q-tooltip anchor="top middle" self="bottom middle" :offset="[10, 10]">Change Password</q-tooltip>
-                                </q-btn>
-                                <q-btn @click="removeUser(props.row)" flat round dense icon="fa-regular fa-trash-can" color="red" size="md">
-                                    <q-tooltip anchor="top middle" self="bottom middle" :offset="[10, 10]">Delete User</q-tooltip>
-                                </q-btn>
-                            </q-td>
-                        </template>
-                    </q-table>
-                </div>
+            <div>
+                <q-btn color="amber-6" text-color="grey-10" rounded class="q-mt-md" @click="openNewUserDialog = true">
+                    <q-icon left size="1em" name="fa-solid fa-plus" />
+                    <div>New User</div>
+                </q-btn>
             </div>
         </div>
-        <SharedSidebar />
+        <div class="q-pl-sm q-col-gutter-sm">
+            <div class="q-mt-md q-mb-lg users-filters">
+                <div class="row items-start q-ml-none q-px-none q-mt-md">
+                    <q-input
+                        v-model="searchQuery"
+                        dense
+                        dark
+                        outlined
+                        placeholder="Search users..."
+                        class="search-input q-mr-md"
+                        style="width: 300px;"
+                        debounce="500"
+                    >
+                        <template v-slot:append>
+                            <q-icon name="search" color="grey-4" />
+                        </template>
+                    </q-input>
+                    <q-select
+                        outlined
+                        v-model="selectedRole"
+                        :options="roles"
+                        option-value="value" 
+                        option-label="name"
+                        emit-value
+                        map-options
+                        dense
+                        style="width: 150px;"
+                        @update:model-value="onRoleSelectChange"
+                        >
+                        <template v-slot:prepend>
+                            <q-icon name="fa-solid fa-user-group" size="18px" color="white" text-color="white" class="q-mr-sm" />
+                        </template>
+                    </q-select>
+                </div>
+            </div>
+            <div class="q-pa-sm">
+                <q-table 
+                    :rows="users" 
+                    row-key="name" 
+                    :columns="columns" 
+                    :loading="loading"
+                    :pagination="pagination"
+                    flat 
+                    bordered
+                    no-data-label="I didn't find anything for you"
+                    no-results-label="The filter didn't uncover any results"
+                    class="users-table">
+                    <template v-slot:body-cell-name="props">
+                        <q-td :props="props">
+                            <q-avatar color="deep-purple" text-color="white" size="28px">
+                                {{ getNameInitials(props.row) }}
+                            </q-avatar>
+                            <span class="q-ml-md">{{ props.row?.first_name +' '+ props.row?.last_name }}</span>
+                        </q-td>
+                    </template>
+                    <template v-slot:body-cell-role="props">
+                        <q-td :props="props">
+                            <div class="q-gutter-xs">
+                                <q-chip :text-color="getRoleTextColor(props.row.role)" size="sm" class="q-px-sm q-ml-xs" :style="{ backgroundColor: getRoleBgColor(props.row.role) }">
+                                    <span class="text-weight-medium">{{ props.row.role }}</span>
+                                </q-chip>
+                            </div>
+                        </q-td>
+                    </template>
+                    <template v-slot:body-cell-actions="props">
+                        <q-td :props="props">
+                            <q-btn @click="editUser(props.row)" flat round dense icon="fa-solid fa-pen-to-square" color="green" size="md">
+                                <q-tooltip anchor="top middle" self="bottom middle" :offset="[10, 10]">Edit User</q-tooltip>
+                            </q-btn>
+                            <q-btn @click="changePassword(props.row)" flat round dense icon="fa-solid fa-unlock" color="amber-6" size="md">
+                                <q-tooltip anchor="top middle" self="bottom middle" :offset="[10, 10]">Change Password</q-tooltip>
+                            </q-btn>
+                            <q-btn @click="removeUser(props.row)" flat round dense icon="fa-regular fa-trash-can" color="red" size="md">
+                                <q-tooltip anchor="top middle" self="bottom middle" :offset="[10, 10]">Delete User</q-tooltip>
+                            </q-btn>
+                        </q-td>
+                    </template>
+                </q-table>
+            </div>
+        </div>
     </div>
-    <div>
-        <q-dialog v-model="openNewUserDialog" backdrop-filter="blur(4px)" persistent>
-            <UsersNewUser @cancelNewUserDialog="cancelNewUserDialog" @saveNewUser="saveNewUser"/>
-        </q-dialog>
-        <q-dialog v-model="openEditUserDialog" backdrop-filter="blur(4px)" persistent>
-            <UsersEditUser :user="user" @cancelEditUserDialog="cancelEditUserDialog" @updateUser="updateUser"/>
-        </q-dialog>
-        <q-dialog v-model="openDeleteDialog" backdrop-filter="blur(4px)" persistent>
-            <ReusablesDeleteDialog :item="user" :table="'users'" @cancelDeleteDialog="cancelDeleteDialog" @deleteItem="deleteUser"/>
-        </q-dialog>
-        <q-dialog v-model="openChangePasswordDialog" backdrop-filter="blur(4px)" persistent>
-            <UsersChangePassword :user="user" @cancelChangePasswordDialog="cancelChangePasswordDialog" @updatePassword="updatePassword"/>
-        </q-dialog>
-    </div>
+    <q-dialog v-model="openNewUserDialog" backdrop-filter="blur(4px)" persistent>
+        <UsersNewUser @cancelNewUserDialog="cancelNewUserDialog" @saveNewUser="saveNewUser"/>
+    </q-dialog>
+    <q-dialog v-model="openEditUserDialog" backdrop-filter="blur(4px)" persistent>
+        <UsersEditUser :user="user" @cancelEditUserDialog="cancelEditUserDialog" @updateUser="updateUser"/>
+    </q-dialog>
+    <q-dialog v-model="openDeleteDialog" backdrop-filter="blur(4px)" persistent>
+        <ReusablesDeleteDialog :item="user" :table="'users'" @cancelDeleteDialog="cancelDeleteDialog" @deleteItem="deleteUser"/>
+    </q-dialog>
+    <q-dialog v-model="openChangePasswordDialog" backdrop-filter="blur(4px)" persistent>
+        <UsersChangePassword :user="user" @cancelChangePasswordDialog="cancelChangePasswordDialog" @updatePassword="updatePassword"/>
+    </q-dialog>
 </template>
 
 <script setup>

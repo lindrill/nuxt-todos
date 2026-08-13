@@ -1,125 +1,119 @@
 <template>
-    <div class="row">
-        <SharedMenu />
-        <div class="col-6">
-            <div class="page-header row justify-between q-mt-lg q-px-md">
-                <div>
-                    <h6 class="page-title q-mt-md q-mb-none">Categories</h6>
-                    <span class="text-body2 text-white">Organize your tasks with categories.</span>
-                </div>
-                <div>
-                    <q-btn color="amber-6" text-color="grey-10" rounded class="q-mt-md" @click="openNewCategoryDialog = true">
-                        <q-icon left size="1em" name="fa-solid fa-plus" />
-                        <div>New Category</div>
-                    </q-btn>
-                </div>
+    <div class="col-6">
+        <div class="page-header row justify-between q-mt-lg q-px-md">
+            <div>
+                <h6 class="page-title q-mt-md q-mb-none">Categories</h6>
+                <span class="text-body2 text-white">Organize your tasks with categories.</span>
             </div>
-            <div class="q-px-md q-col-gutter-sm">
-                <div class="q-mt-md q-mb-lg categories-filters">
-                    <div class="row items-start q-ml-none q-px-none q-mt-md">
-                        <q-input
-                            v-model="searchQuery"
-                            dense
-                            dark
-                            outlined
-                            placeholder="Search categories..."
-                            class="search-input q-mr-md"
-                            style="width: 300px;"
-                            debounce="500"
-                        >
-                            <template v-slot:append>
-                                <q-icon name="search" color="grey-4" />
-                            </template>
-                        </q-input>
-                        <q-select
-                            v-if="isAdmin"
-                            outlined
-                            v-model="selectedUser"
-                            :options="users"
-                            dense
-                            option-value="_id" 
-                            :option-label="(user) => getFullName(user)"
-                            style="width: 250px;"
-                            @update:model-value="onUserSelectChange"
-                            >
-                            <template v-slot:prepend>
-                                <q-icon name="fa-solid fa-filter" size="18px" color="white" text-color="white" />
-                            </template>
-                        </q-select>
-                    </div>
-                </div>
-                <div class="q-pa-sm">
-                    <q-table 
-                        :rows="categories" 
-                        row-key="title" 
-                        :columns="columns" 
-                        :loading="loading"
-                        :pagination="pagination"
-                        flat 
-                        bordered
-                        no-data-label="I didn't find anything for you"
-                        no-results-label="The filter didn't uncover any results"
-                        class="categories-table"
-                        @row-click="viewCategory"
-                        >
-                        <template v-slot:body-cell-category="props">
-                            <q-td :props="props">
-                                <div class="row full-width q-mr-lg items-center">
-                                    <div class="icon-wrapper q-mr-md">
-                                        <q-icon :name="'fa-solid fa-' + props.row.icon" size="20px" color="amber-6" />
-                                    </div>
-                                    <span class="text-weight-medium">{{ props.row.title }}</span>
-                                    <q-chip 
-                                        size="sm" 
-                                        dense
-                                        :style="{ backgroundColor: '#1c2f4c' }" 
-                                        text-color="primary"
-                                        class="q-ml-sm custom-chip-size"
-                                    >
-                                        {{ props.row.todosCount }}
-                                    </q-chip>
-                                </div>
-                            </q-td>
-                        </template>
-                        <template v-slot:body-cell-createdBy="props">
-                            <q-td :props="props">
-                                <q-avatar color="deep-purple" text-color="white" size="28px">
-                                    {{ getNameInitials(props.row.createdBy) }}
-                                </q-avatar>
-                                <span class="q-ml-sm">{{ props.row.createdBy?.first_name +' '+ props.row.createdBy?.last_name }}</span>
-                            </q-td>
-                        </template>
-                        <template v-slot:body-cell-actions="props">
-                            <q-td :props="props">
-                                <q-btn @click.stop="editCategory(props.row)" flat round dense icon="fa-solid fa-pen-to-square" color="green" size="md">
-                                    <q-tooltip anchor="top middle" self="bottom middle" :offset="[10, 10]">Edit Category</q-tooltip>
-                                </q-btn>
-                                <q-btn @click.stop="removeCategory(props.row)" flat round dense icon="fa-regular fa-trash-can" color="red" size="md">
-                                    <q-tooltip anchor="top middle" self="bottom middle" :offset="[10, 10]">Delete Category</q-tooltip>
-                                </q-btn>
-                            </q-td>
-                        </template>
-                        
-                    </q-table>
-                </div>
+            <div>
+                <q-btn color="amber-6" text-color="grey-10" rounded class="q-mt-md" @click="openNewCategoryDialog = true">
+                    <q-icon left size="1em" name="fa-solid fa-plus" />
+                    <div>New Category</div>
+                </q-btn>
             </div>
         </div>
-        <SharedSidebar />
+        <div class="q-pl-sm q-col-gutter-sm">
+            <div class="q-mt-md q-mb-lg categories-filters">
+                <div class="row items-start q-ml-none q-px-none q-mt-md">
+                    <q-input
+                        v-model="searchQuery"
+                        dense
+                        dark
+                        outlined
+                        placeholder="Search categories..."
+                        class="search-input q-mr-md"
+                        style="width: 300px;"
+                        debounce="500"
+                    >
+                        <template v-slot:append>
+                            <q-icon name="search" color="grey-4" />
+                        </template>
+                    </q-input>
+                    <q-select
+                        v-if="isAdmin"
+                        outlined
+                        v-model="selectedUser"
+                        :options="users"
+                        dense
+                        option-value="_id" 
+                        :option-label="(user) => getFullName(user)"
+                        style="width: 250px;"
+                        @update:model-value="onUserSelectChange"
+                        >
+                        <template v-slot:prepend>
+                            <q-icon name="fa-solid fa-filter" size="18px" color="white" text-color="white" />
+                        </template>
+                    </q-select>
+                </div>
+            </div>
+            <div class="q-pa-sm">
+                <q-table 
+                    :rows="categories" 
+                    row-key="title" 
+                    :columns="columns" 
+                    :loading="loading"
+                    :pagination="pagination"
+                    flat 
+                    bordered
+                    no-data-label="I didn't find anything for you"
+                    no-results-label="The filter didn't uncover any results"
+                    class="categories-table"
+                    @row-click="viewCategory"
+                    >
+                    <template v-slot:body-cell-category="props">
+                        <q-td :props="props">
+                            <div class="row full-width q-mr-lg items-center">
+                                <div class="icon-wrapper q-mr-md">
+                                    <q-icon :name="'fa-solid fa-' + props.row.icon" size="20px" color="amber-6" />
+                                </div>
+                                <span class="text-weight-medium">{{ props.row.title }}</span>
+                                <q-chip 
+                                    size="sm" 
+                                    dense
+                                    :style="{ backgroundColor: '#1c2f4c' }" 
+                                    text-color="primary"
+                                    class="q-ml-sm custom-chip-size"
+                                >
+                                    {{ props.row.todosCount }}
+                                </q-chip>
+                            </div>
+                        </q-td>
+                    </template>
+                    <template v-slot:body-cell-createdBy="props">
+                        <q-td :props="props">
+                            <q-avatar color="deep-purple" text-color="white" size="28px">
+                                {{ getNameInitials(props.row.createdBy) }}
+                            </q-avatar>
+                            <span class="q-ml-sm">{{ props.row.createdBy?.first_name +' '+ props.row.createdBy?.last_name }}</span>
+                        </q-td>
+                    </template>
+                    <template v-slot:body-cell-actions="props">
+                        <q-td :props="props">
+                            <q-btn @click.stop="editCategory(props.row)" flat round dense icon="fa-solid fa-pen-to-square" color="green" size="md">
+                                <q-tooltip anchor="top middle" self="bottom middle" :offset="[10, 10]">Edit Category</q-tooltip>
+                            </q-btn>
+                            <q-btn @click.stop="removeCategory(props.row)" flat round dense icon="fa-regular fa-trash-can" color="red" size="md">
+                                <q-tooltip anchor="top middle" self="bottom middle" :offset="[10, 10]">Delete Category</q-tooltip>
+                            </q-btn>
+                        </q-td>
+                    </template>
+                    
+                </q-table>
+            </div>
+        </div>
     </div>
-    <div>
-        <q-dialog v-model="openNewCategoryDialog" backdrop-filter="blur(4px)" persistent>
-            <CategoriesNewCategory @cancelNewCategoryDialog="cancelNewCategoryDialog" @saveNewCategory="saveNewCategory"/>
-        </q-dialog>
-        <q-dialog v-model="openEditCategoryDialog" backdrop-filter="blur(4px)" persistent>
-            <CategoriesEditCategory :category="category" :categories="categories" @cancelEditCategoryDialog="cancelEditCategoryDialog" @updateCategory="updateCategory"/>
-        </q-dialog>
-        <q-dialog v-model="openDeleteDialog" backdrop-filter="blur(4px)" persistent>
-            <ReusablesDeleteDialog :item="category" :table="'categories'" @cancelDeleteDialog="cancelDeleteDialog" @deleteItem="deleteCategory"/>
-        </q-dialog>
-        <q-dialog v-model="openViewCategoryDialog" backdrop-filter="blur(4px)" persistent>
-            <CategoriesViewCategory :category="category" @cancelViewCategoryDialog="cancelViewCategoryDialog"/>
-        </q-dialog>
-    </div>
+    <q-dialog v-model="openNewCategoryDialog" backdrop-filter="blur(4px)" persistent>
+        <CategoriesNewCategory @cancelNewCategoryDialog="cancelNewCategoryDialog" @saveNewCategory="saveNewCategory"/>
+    </q-dialog>
+    <q-dialog v-model="openEditCategoryDialog" backdrop-filter="blur(4px)" persistent>
+        <CategoriesEditCategory :category="category" :categories="categories" @cancelEditCategoryDialog="cancelEditCategoryDialog" @updateCategory="updateCategory"/>
+    </q-dialog>
+    <q-dialog v-model="openDeleteDialog" backdrop-filter="blur(4px)" persistent>
+        <ReusablesDeleteDialog :item="category" :table="'categories'" @cancelDeleteDialog="cancelDeleteDialog" @deleteItem="deleteCategory"/>
+    </q-dialog>
+    <q-dialog v-model="openViewCategoryDialog" backdrop-filter="blur(4px)" persistent>
+        <CategoriesViewCategory :category="category" @cancelViewCategoryDialog="cancelViewCategoryDialog"/>
+    </q-dialog>
 </template>
 
 <script setup>

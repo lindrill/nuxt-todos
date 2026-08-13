@@ -86,33 +86,14 @@
     import { ref } from 'vue'
     import moment from 'moment'
 
-    const props = defineProps(['todos', 'pendingDates', 'completedDates', 'calendarAttributes'])
+    const props = defineProps(['todos', 'calendarAttributes'])
 
     // ===== METHODS =====
     const taskDue = (todo) => {
         let due = { date: moment.utc(todo.dueDate).format("MMM D"), day: moment.utc(todo.dueDate).format("ddd") }
         return due
     }
-
-    // ===== COMPUTED PROPERTIES =====
-    const countPendingDates = computed(() => {
-        const counts = {}
-        props.pendingDates.forEach(date => {
-            const key = moment.utc(date).format('YYYY-MM-DD') // normalize so same-day dates group together
-            counts[key] = (counts[key] || 0) + 1
-        })
-        return Object.entries(counts).map(([date, count]) => ({ date, count }))
-    })
-
-    const countCompletedDates = computed(() => {
-        const counts = {}
-        props.completedDates.forEach(date => {
-            const key = moment.utc(date).format('YYYY-MM-DD') // normalize so same-day dates group together
-            counts[key] = (counts[key] || 0) + 1
-        })
-        return Object.entries(counts).map(([date, count]) => ({ date, count }))
-    })
-
+    
     const getStatusColor = (status) => {
         switch (status) {
             case 'pending':
@@ -123,6 +104,8 @@
                 return 'black'
         }
     }
+
+    // ===== COMPUTED PROPERTIES =====
 
     const upcomingTasks = computed(() => {
         return props.todos.filter(todo => todo.status === 'pending').slice(0, 5)
@@ -149,12 +132,6 @@
             })
         })
         return attrs
-    })
-
-    // ===== LIFECYCLE HOOKS =====
-    onMounted(() => {
-        console.log('pending count', countPendingDates.value)
-        console.log('attributesTodo', attributesTodo)
     })
 </script>
 
