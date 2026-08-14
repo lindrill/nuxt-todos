@@ -200,6 +200,7 @@
 <script setup>
     import { useQuasar } from 'quasar'
     import moment from 'moment'
+    const { fetchSidebarData } = useSidebarData()
     
     // ===== REACTIVE VARIABLES =====
     const $q = useQuasar()
@@ -218,12 +219,12 @@
     const totalTodos = ref([])
     const limit = ref(10) // todos pagination limit
     const categories = ref([])
-    const activeTab = ref('all')
+    const activeTab = ref('pending')
     const searchQuery = ref('')
     const tabs = ref([
-        { name: 'all', label: 'All' },
         { name: 'pending', label: 'Pending' },
-        { name: 'completed', label: 'Completed' }
+        { name: 'completed', label: 'Completed' },
+        { name: 'all', label: 'All' }
     ])
     const pendingCount = ref(0)
     const completedCount = ref(0)
@@ -245,6 +246,7 @@
     const saveNewTodo = () => {
         openNewTaskDialog.value = false
         fetchTodos()
+        fetchSidebarData()
     }
     const todoActions = (action, selectedTodo) => {
         todo.value = selectedTodo
@@ -260,11 +262,13 @@
         openDeleteDialog.value = false
         notification('positive', 'Task successfully deleted!')
         fetchTodos()
+        fetchSidebarData()
     }
     const updateTodo = () => {
         openEditTaskDialog.value = false
         notification('positive', 'Task successfully updated!')
         fetchTodos()
+        fetchSidebarData()
     }
     
     // API calls
@@ -291,6 +295,7 @@
         }
         notification('positive', 'Task successfully updated!')
         fetchTodos()
+        fetchSidebarData()
     }
     const fetchCategories = async () => {
         try {

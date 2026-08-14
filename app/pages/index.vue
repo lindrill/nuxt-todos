@@ -157,7 +157,7 @@
         <CategoriesNewCategory @cancelNewCategoryDialog="cancelNewCategoryDialog" @saveNewCategory="saveNewCategory"/>
     </q-dialog>
     <q-dialog v-model="openAllCategoriesDialog" backdrop-filter="blur(4px)" persistent>
-        <DashboardCategoriesDialog :categories="categories" @cancelViewCategoryDialog="cancelViewCategoryDialog"/>
+        <DashboardCategoriesDialog :categories="categoriesTasks" @cancelViewCategoryDialog="cancelViewCategoryDialog"/>
     </q-dialog>
 </template>
 
@@ -170,11 +170,13 @@
     const { fetch, apiBase } = useApi()
     const { notification } = useTrigger()
     const { userInfo, isAuthenticated } = useAuth()
+    const { fetchSidebarData } = useSidebarData()
 
     const openNewTaskDialog = ref(false)
     const openNewCategoryDialog = ref(false)
     const openAllCategoriesDialog = ref(false)
     const categories = ref([])
+    const categoriesTasks = ref([])
     const selectedDate = ref('This Year')
     const startDate = ref(moment().startOf('year').format('YYYY-MM-DD'))
     const endDate = ref(moment().endOf('year').format('YYYY-MM-DD'))
@@ -233,6 +235,7 @@
         openNewTaskDialog.value = false
         notification('positive', 'Task successfully saved!')
         fetchTodosCount()
+        fetchSidebarData()
     }
     const saveNewCategory = () => {
         openNewCategoryDialog.value = false
@@ -253,7 +256,6 @@
     const fetchCategories = async () => {
         try {
             const response = await fetch('/categories/all', { params: { userId: userInfo.value._id } })
-            console.log('fetch cats', response)
             categories.value = response
         } catch (err) {
             console.error('Fetch failed:', err)
@@ -281,7 +283,7 @@
             todosCount.value.pending = response.pendingCount
             todosCount.value.completed = response.completedCount
             chartStats.value = response.chartStats
-            categories.value = response.categories
+            categoriesTasks.value = response.categories
         } catch (err) {
             console.error('Fetch failed:', err)
         }
@@ -313,7 +315,7 @@
         return Math.round((todosCount.value.pending / todosCount.value.total) * 100) || 0
     })
     const categoriesList = computed(() => {
-        return categories.value.slice(0, 4);
+        return categoriesTasks.value.slice(0, 4);
     })
 
     // ===== LIFECYCLE HOOKS =====

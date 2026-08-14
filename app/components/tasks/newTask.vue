@@ -94,6 +94,8 @@
 </template>
 
 <script setup>
+    import moment from 'moment'
+
     const { fetch } = useApi()
     const { userInfo } = useAuth()
 
@@ -134,6 +136,7 @@
     // API calls
     const saveNewTodo = async () => {
         newTodo.value.category = newTodo.value.category._id
+        newTodo.value.dueDate = moment(newTodo.value.dueDate, 'YYYY/MM/DD').format('YYYY-MM-DD')
         console.log('saveNewTodo', newTodo.value)
         try {
             await fetch('/todos/new', {

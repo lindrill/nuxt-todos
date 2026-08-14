@@ -27,24 +27,25 @@
 
     const { fetch, apiBase } = useApi()
     const { userInfo, isAuthenticated } = useAuth()
-    const calendarAttributes = ref([])
-    const todos = ref([])
+    // const calendarAttributes = ref([])
+    // const todos = ref([])
+
+    const { todos, calendarAttributes, fetchSidebarData } = useSidebarData()
+
 
     // API calls
-    const fetchTodos = async () => {
-        try {
-            const response = await fetch('/todos/all', { params: { userId: userInfo.value._id, keyword: '' } })
-            todos.value = response.todos
-            // pendingDates.value = response.pendingDates  
-            // completedDates.value = response.completedDates
-            calendarAttributes.value = response.calendarAttributes
-        } catch (err) {
-            console.error('Fetch failed:', err)
-        }
-    }
+    // const fetchTodos = async () => {
+    //     try {
+    //         const response = await fetch('/todos/all', { params: { userId: userInfo.value._id, keyword: '' } })
+    //         todos.value = response.todos
+    //         calendarAttributes.value = response.calendarAttributes
+    //     } catch (err) {
+    //         console.error('Fetch failed:', err)
+    //     }
+    // }
 
     // ===== LIFECYCLE HOOKS =====
     onMounted(() => {
-        fetchTodos()
+        fetchSidebarData()
     })
 </script>

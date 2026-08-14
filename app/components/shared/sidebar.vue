@@ -5,10 +5,11 @@
                 <span class="text-white text-weight-bold q-mt-md sidebar-title-calendar">Calendar</span>
                 <ClientOnly>
                     <VCalendar
+                        :key="calendarKey"
                         expanded
                         color="yellow" 
                         transparent
-                        borderless 
+                        borderless
                         :is-dark="true"
                         :attributes="attributesTodo"
                         :masks="{ weekdays: 'WWW' }"
@@ -111,11 +112,25 @@
         return props.todos.filter(todo => todo.status === 'pending').slice(0, 5)
     })
 
+    const calendarKey = computed(() => {
+        return attributesTodo.value.map(attr => attr.key).join('|')
+    })
+
     const attributesTodo = computed(() => {
-        const attrs = []
+        const attrs = [
+            {
+                key: 'today',
+                highlight: {
+                    color: 'yellow',
+                    fillMode: 'solid',
+                },
+                dates: new Date(),
+            },
+        ]
         props.calendarAttributes.forEach(item => {
             item.statuses.forEach(s => {
                 attrs.push({
+                    key: `${item.date}-${s.status}-${s.titles.join('·')}`,
                     dates: item.date,
                     dot: {
                         color: getStatusColor(s.status),
