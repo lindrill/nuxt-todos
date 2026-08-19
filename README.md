@@ -3,6 +3,7 @@
 A full-stack task and todo management application built to help users organize tasks, track progress, and manage daily activities through a centralized dashboard.
 
 <img width="5826" height="3417" alt="tinkerflow-dashboard-full-page" src="https://github.com/user-attachments/assets/d8fd8f5e-c6fa-4cbf-a46c-10f4fd55ed10" />
+<img width="1905" height="922" alt="localhost_3000_ (9)" src="https://github.com/user-attachments/assets/5d3ec434-59c7-4719-9a8c-0023c3a62b3f" />
 
 
 ## 🚧 Project Status
