@@ -14,15 +14,27 @@
                 
                 <div class="q-my-sm" v-if="props.page === 'profile'">
                     <label for="first_name">Current Password</label>
-                    <q-input type="password" filled v-model="clonedUser.current_password" color="amber-6" lazy-rules debounce="500" :rules="[rules.required, rules.verifyCurrentPwd]" class="q-mt-sm"/>
+                    <q-input :type="showCurrentPassword ? 'text' : 'password'" filled v-model="clonedUser.current_password" color="amber-6" lazy-rules debounce="500" :rules="[rules.required, rules.verifyCurrentPwd]" class="q-mt-sm">
+                        <template v-slot:append>
+                            <q-icon class="cursor-pointer" @click="showCurrentPassword = !showCurrentPassword" :name="showCurrentPassword ? 'fa-regular fa-eye-slash' : 'fa-regular fa-eye'" color="blue-grey-5" />
+                        </template>
+                    </q-input>
                 </div>
                 <div class="q-my-sm">
                     <label for="first_name">New Password</label>
-                    <q-input type="password" filled v-model="clonedUser.new_password" color="amber-6" lazy-rules debounce="500" :rules="[rules.required, rules.min, rules.verifyUniqueNewPwd]" class="q-mt-sm"/>
+                    <q-input :type="showPassword ? 'text' : 'password'" filled v-model="clonedUser.new_password" color="amber-6" lazy-rules debounce="500" :rules="[rules.required, rules.min, rules.verifyUniqueNewPwd]" class="q-mt-sm">
+                        <template v-slot:append>
+                            <q-icon class="cursor-pointer" @click="showPassword = !showPassword" :name="showPassword ? 'fa-regular fa-eye-slash' : 'fa-regular fa-eye'" color="blue-grey-5" />
+                        </template>
+                    </q-input>
                 </div>
                 <div class="q-my-sm">
                     <label for="first_name">Confirm New Password</label>
-                    <q-input type="password" filled v-model="clonedUser.confirm_password" color="amber-6" lazy-rules :rules="[rules.required, rules.min, rules.matchPwd]" class="q-mt-sm"/>
+                    <q-input :type="showConfirmPassword ? 'text' : 'password'" filled v-model="clonedUser.confirm_password" color="amber-6" lazy-rules :rules="[rules.required, rules.min, rules.matchPwd]" class="q-mt-sm">
+                        <template v-slot:append>
+                            <q-icon class="cursor-pointer" @click="showConfirmPassword = !showConfirmPassword" :name="showConfirmPassword ? 'fa-regular fa-eye-slash' : 'fa-regular fa-eye'" color="blue-grey-5" />
+                        </template>
+                    </q-input>
                 </div>
                 
             </q-card-section>
@@ -76,6 +88,9 @@
             }
         }
     })
+    const showCurrentPassword = ref(false)
+    const showPassword = ref(false)
+    const showConfirmPassword = ref(false)
     
     // ===== METHODS =====
     const cancelChangePasswordDialog = () => {

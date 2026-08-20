@@ -17,11 +17,15 @@
                 </div>
                 <div class="q-my-sm">
                     <label for="email">Email</label>
-                    <q-input type="email" outlined v-model="newUser.email" lazy-rules :rules="[rules.required, rules.email]" color="amber-6" class="q-mt-sm"/>
+                    <q-input type="email" outlined v-model="newUser.email" lazy-rules :rules="[rules.required, rules.email]" color="amber-6" class="q-mt-sm" autocomplete="off"/>
                 </div>
                 <div class="q-my-sm">
                     <label for="password">Password</label>
-                    <q-input type="password" outlined v-model="newUser.password" lazy-rules :rules="[rules.required, rules.min]" color="amber-6" class="q-mt-sm"/>
+                    <q-input :type="showPassword ? 'text' : 'password'" outlined v-model="newUser.password" lazy-rules :rules="[rules.required, rules.min]" color="amber-6" class="q-mt-sm">
+                        <template v-slot:append>
+                            <q-icon class="cursor-pointer" @click="showPassword = !showPassword" :name="showPassword ? 'fa-regular fa-eye-slash' : 'fa-regular fa-eye'" color="blue-grey-5" />
+                        </template>    
+                    </q-input>
                 </div>
                 <div class="q-my-sm">
                     <label for="email">Role</label>
@@ -59,6 +63,7 @@
         { label: 'Admin', value: 'admin' },
         { label: 'Member', value: 'member'}
     ]
+    const showPassword = ref(false)
     
     // ===== METHODS =====
     const cancelNewUserDialog = () => {

@@ -5,7 +5,7 @@ body {
     /* background-color: #222c41 !important; */
     background-color: #0e1827 !important;
 }
-.task-form, .category-form, .user-form, .task-details, .delete-form {
+.task-form, .category-form, .user-form, .task-details, .delete-form, .login-form, .forgot-password-form, .sign-up-form {
     background-color: #161e2b;
     border: 1px solid #28303f;
     border-radius: 10px !important;
@@ -19,19 +19,25 @@ body {
 }
 .task-form .q-field__control,
 .category-form .q-field__control,
-.user-form .q-field__control {
+.user-form .q-field__control,
+.login-form .q-field__control,
+.forgot-password-form .q-field__control,
+.sign-up-form .q-field__control {
     border-radius: 10px !important;
     background-color: #1d2534 !important;
 }
 .task-form .q-field--outlined .q-field__control:before,
 .category-form .q-field--outlined .q-field__control:before,
-.user-form .q-field--outlined .q-field__control:before {
+.user-form .q-field--outlined .q-field__control:before,
+.login-form .q-field--outlined .q-field__control:before,
+.forgot-password-form .q-field--outlined .q-field__control:before {
     border-color: #28303f !important;
 }
  
 .task-form .q-field--outlined .q-field__control:hover:before,
 .category-form .q-field--outlined .q-field__control:hover:before,
-.user-form .q-field--outlined .q-field__control:hover:before {
+.user-form .q-field--outlined .q-field__control:hover:before,
+.login-form .q-field--outlined .q-field__control:hover:before {
     border-color: #28303f !important;
 }
  
@@ -45,7 +51,13 @@ body {
 .category-form .q-field__native,
 .category-form .q-field__input,
 .user-form .q-field__native,
-.user-form .q-field__input {
+.user-form .q-field__input,
+.login-form .q-field__native,
+.login-form .q-field__input,
+.forgot-password-form .q-field__native,
+.forgot-password-form .q-field__input,
+.sign-up-form .q-field__native,
+.sign-up-form .q-field__input {
     color: white !important;
 }
 /* .task-form .q-btn,
