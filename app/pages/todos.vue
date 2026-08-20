@@ -370,7 +370,7 @@
         }
     }
     const formatDate = (date) => {
-        return moment(date).format('MMMM DD, YYYY')
+        return moment.utc(date).format('MMMM DD, YYYY')
     }
     const formatTime = (time) => {
         return moment(time, 'HH:mm').format('h:mm A'); 

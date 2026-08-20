@@ -100,7 +100,7 @@
     }
 
     const formatDate = (date) => {
-        return moment(date).format('MMMM DD, YYYY')
+        return moment.utc(date).format('MMMM DD, YYYY')
     }
     const formatDay = (date) => {
         return moment(date).format('dddd')

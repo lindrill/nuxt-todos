@@ -28,7 +28,7 @@
                         class="q-mt-sm"
                         >
                         <template v-slot:selected>
-                            <q-icon :name="'fa-solid fa-'+newTodo.category.icon" color="amber-6" size="24px" class="q-ml-sm" />
+                            <q-icon :name="'fa-solid fa-'+newTodo.category.icon" color="amber-6" size="24px" class="q-mr-md q-ml-sm" />
                             {{ newTodo.category.title }}
                         </template>
                         <template v-slot:option="scope">

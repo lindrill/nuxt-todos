@@ -2,7 +2,7 @@
     <div class="col-3 q-pa-md items-start q-mt-sm">
         <q-card class="my-card sidebar-card card-rounded">
             <q-card-section>
-                <span class="text-white text-weight-bold q-mt-md sidebar-title-calendar">Calendar</span>
+                <span class="text-white text-weight-bold q-ma-md sidebar-title-calendar">Calendar</span>
                 <ClientOnly>
                     <VCalendar
                         :key="calendarKey"

@@ -15,13 +15,11 @@
                     <label for="title">Category</label>
                     <q-select 
                         outlined 
-                        v-model="clonedTodo.category" 
+                        v-model="selectedCategory" 
                         color="amber-6" 
                         :options="catOptions" 
                         option-value="_id" 
-                        option-label="title" 
-                        emit-value
-                        map-options
+                        option-label="title"
                         use-input
                         use-chips
                         stack-label
@@ -30,7 +28,7 @@
                         class="q-mt-sm"
                         >
                         <template v-slot:selected>
-                            <q-icon color="amber-6" :name="'fa-solid fa-'+selectedCategory?.icon" size="24px" class="q-ml-sm"/>
+                            <q-icon color="amber-6" :name="'fa-solid fa-'+selectedCategory?.icon" size="24px" class="q-mr-md q-ml-sm"/>
                             {{ selectedCategory?.title }}
                         </template>
                         <template v-slot:option="scope">
@@ -99,13 +97,14 @@
     const { fetch, apiBase } = useApi()
     const props = defineProps(['todo', 'categories'])
     const emit = defineEmits(['cancelEditTaskDialog', 'updateTodo'])
-    const catOptions = ref(props.categories)
 
     // ===== REACTIVE VARIABLES =====
+    const catOptions = ref(props.categories)
     const clonedTodo = ref({ ...props.todo })
     const rules = ref({
         required: val => !!val || 'Field is required'
     })
+    const selectedCategory = ref(clonedTodo.value.category)
     
     // ===== METHODS =====
     const cancelEditTaskDialog = () => {
@@ -123,13 +122,11 @@
     }
 
     // ===== COMPUTED PROPERTIES =====
-    const selectedCategory = computed(() => {
-        return props.categories.find(cat => cat._id === clonedTodo.value.category)
-    })
     
     // API calls
     const updateTodo = async () => {
         console.log('update todo', clonedTodo.value)
+        clonedTodo.value.category = selectedCategory.value._id
         try {
             await fetch('/todos/'+props.todo._id, {
                 method: 'PATCH',
@@ -141,7 +138,4 @@
         }
     }
 
-    onMounted(() => {
-        // console.log('edit task mounted', props.categories)
-    })
 </script>
